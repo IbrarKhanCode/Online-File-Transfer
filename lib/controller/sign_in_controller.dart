@@ -3,7 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:online_file_transfer/view/home/home_screen.dart';
+import 'package:online_file_transfer/view/home/bottom_view.dart';
 
 class SignInController extends GetxController{
 
@@ -56,7 +56,7 @@ class SignInController extends GetxController{
         borderRadius: 8,
         borderWidth: 2,
       );
-      Get.offAll(HomeScreen());
+      Get.offAll(BottomView());
 
     } catch (e) {
       Get.snackbar(

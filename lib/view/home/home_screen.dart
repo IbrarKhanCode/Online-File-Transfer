@@ -14,6 +14,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   final controller = Get.put(HomeController());
 
+
   @override
   Widget build(BuildContext context) {
 
@@ -21,6 +22,7 @@ class _HomeScreenState extends State<HomeScreen> {
     double w = MediaQuery.of(context).size.width;
 
     return Scaffold(
+
       backgroundColor: Colors.grey.shade100,
       body: Column(
         children: [
@@ -123,16 +125,16 @@ class _HomeScreenState extends State<HomeScreen> {
           Obx((){
             return Column(
               children: [
-                if(controller.isListView.value)
+                if(controller.isListView.value && controller.files.isNotEmpty)
                   SizedBox(
-                    height: h * .6,
+                    height: h * .65,
                     width: w,
                     child: ListView.builder(
-                      itemCount: 4,
+                      itemCount: controller.fileName.length,
                         scrollDirection: Axis.vertical,
                         itemBuilder: (context,index){
                           return Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 20,vertical: 10),
+                            padding: const EdgeInsets.symmetric(horizontal: 20,vertical: 5),
                             child: Container(
                               height: h * .1,
                               width: w,
@@ -157,8 +159,20 @@ class _HomeScreenState extends State<HomeScreen> {
                                       mainAxisAlignment: MainAxisAlignment.center,
                                       crossAxisAlignment: CrossAxisAlignment.start,
                                       children: [
-                                        Text('File Name',style: TextStyle(color: Colors.black,fontWeight: FontWeight.w500,fontSize: 14),),
-                                        Text('20-05-2024   20 Days Left',style: TextStyle(color: Colors.grey,fontWeight: FontWeight.w400,fontSize: 11),),
+                                        Obx((){
+                                          return Text(controller.fileName[index],
+                                            style: TextStyle(color: Colors.black,
+                                                fontWeight: FontWeight.w500,
+                                                fontSize: 14),
+                                          );
+                                        }),
+                                        Row(
+                                          children: [
+                                            Text('20-05-2024',style: TextStyle(color: Colors.grey,fontWeight: FontWeight.w400,fontSize: 11),),
+                                            SizedBox(width: 10,),
+                                            Text('20-05-2024',style: TextStyle(color: Colors.grey,fontWeight: FontWeight.w400,fontSize: 11),),
+                                          ],
+                                        ),
                                       ],
                                     ),
                                     Spacer(),
@@ -171,47 +185,82 @@ class _HomeScreenState extends State<HomeScreen> {
                         }),
                   ),
 
-                if(!controller.isListView.value)
-                  Center(child: Text('GridView'),),
-
-
-
-
-
-                // Container(
-                //   height: h * .07,
-                //   width: w * .2,
-                //   decoration: BoxDecoration(
-                //       image: DecorationImage(image: AssetImage('assets/images/file.png'))
-                //   ),
-                // ),
-                // SizedBox(height: 5,),
-                // Text('No Data Found',style: TextStyle(color: Colors.grey,fontWeight: FontWeight.w400,fontSize: 10),),
-
+                if(!controller.isListView.value && controller.files.isNotEmpty)
+                  SizedBox(
+                    height: h * .65,
+                    width: w,
+                    child: GridView.builder(
+                      itemCount: controller.fileName.length,
+                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: 3,
+                          childAspectRatio: 0.6,
+                        ),
+                        itemBuilder: (context,index){
+                         return Column(
+                           crossAxisAlignment: CrossAxisAlignment.center,
+                           mainAxisSize: MainAxisSize.min,
+                           children: [
+                             Container(
+                               height: h * .12,
+                               width: w * .27,
+                               decoration: BoxDecoration(
+                                   color: Colors.white,
+                                   borderRadius: BorderRadius.circular(10),
+                               ),
+                             ),
+                             SizedBox(height: 10,),
+                             Padding(
+                               padding: const EdgeInsets.symmetric(horizontal: 15),
+                               child: Text(
+                                 textAlign: TextAlign.center,
+                                 controller.fileName[index],
+                                 style: TextStyle(color: Colors.black,
+                                     fontSize: 14,
+                                     fontWeight: FontWeight.w500),
+                               ),
+                             ),
+                             Text('20-05-2024',style: TextStyle(color: Colors.grey,fontSize: 11,fontWeight: FontWeight.w400),),
+                           ],
+                         );
+                        }),
+                  ),
+                if(controller.files.isEmpty)...[
+                  SizedBox(height: h * .27,),
+                  Container(
+                    height: h * .07,
+                    width: w * .2,
+                    decoration: BoxDecoration(
+                      image: DecorationImage(image: AssetImage('assets/images/file.png')),
+                    ),
+                  ),
+                  SizedBox(height: 5,),
+                  Text('No Data Found',style: TextStyle(color: Colors.grey,fontWeight: FontWeight.w400,fontSize: 10),),
+                  SizedBox(height: h * .29,),
+                ],
+                GestureDetector(
+                  onTap: (){
+                    controller.pickFiles();
+                  },
+                  child: Container(
+                    height: h * .06,
+                    width: w * .9,
+                    decoration: BoxDecoration(
+                      color: Colors.black,
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(Icons.add,color: Colors.white,),
+                        SizedBox(width: 10,),
+                        Text('Upload File',style: TextStyle(color: Colors.white,fontSize: 12,fontWeight: FontWeight.w600),)
+                      ],
+                    ),
+                  ),
+                ),
               ],
             );
           }),
-          SizedBox(height: h * .1,),
-          GestureDetector(
-            onTap: (){},
-            child: Container(
-              height: h * .06,
-              width: w * .9,
-              decoration: BoxDecoration(
-                color: Colors.black,
-                borderRadius: BorderRadius.circular(10),
-              ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Icon(Icons.add,color: Colors.white,),
-                  SizedBox(width: 10,),
-                  Text('Upload File',style: TextStyle(color: Colors.white,fontSize: 12,fontWeight: FontWeight.w600),)
-                ],
-              ),
-            ),
-          ),
-
         ],
       ),
     );

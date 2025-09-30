@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:online_file_transfer/controller/sign_in_controller.dart';
 import 'package:online_file_transfer/core/utilis/app_colors.dart';
-import 'package:online_file_transfer/view/home/home_screen.dart';
+import 'package:online_file_transfer/view/home/bottom_view.dart';
 
 class SigninScreen extends StatefulWidget {
   const SigninScreen({super.key});
@@ -93,7 +93,7 @@ class _SigninScreenState extends State<SigninScreen> {
           SizedBox(height: 20,),
           GestureDetector(
             onTap: (){
-              Get.offAll(HomeScreen());
+              Get.offAll(BottomView());
             },
             child: Container(
               height: h * .06,

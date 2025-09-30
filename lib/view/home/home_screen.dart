@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:online_file_transfer/controller/home_controller.dart';
 import 'package:online_file_transfer/core/utilis/app_colors.dart';
@@ -30,7 +29,15 @@ class _HomeScreenState extends State<HomeScreen> {
             padding: const EdgeInsets.symmetric(horizontal: 20),
             child: Row(
               children: [
-                SvgPicture.asset('assets/icons/side_bar.svg'),
+              Container(
+              height: h * .03,
+              width: w * .05,
+              decoration: BoxDecoration(
+                  image: DecorationImage(
+                      image: AssetImage('assets/images/side_bar.png'),
+                  )
+              ),
+            ),
                 SizedBox(width: 20,),
                 Text('APP LOGO',style: TextStyle(color: AppColors.primaryColor,fontWeight: FontWeight.w700,fontSize: 20),),
                 Spacer(),
@@ -89,13 +96,23 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                 ),
                 SizedBox(width: 15,),
-                Container(
-                  height: h * .03,
-                  width: w * .05,
-                  decoration: BoxDecoration(
-                    image: DecorationImage(image: AssetImage('assets/images/grid.png'))
-                  ),
-                )
+                GestureDetector(
+                  onTap: (){
+                    controller.toggleView();
+                  },
+                  child: Obx((){
+                    return Container(
+                      height: h * .03,
+                      width: w * .05,
+                      decoration: BoxDecoration(
+                          image: DecorationImage(
+                              image: controller.isListView.value ? AssetImage('assets/images/grid.png')
+                                  : AssetImage('assets/images/list.png'),
+                          )
+                      ),
+                    );
+                  })
+                ),
               ],
             ),
           ),
@@ -103,17 +120,78 @@ class _HomeScreenState extends State<HomeScreen> {
           Divider(
             color: Colors.grey,
           ),
-          SizedBox(height: h * .26,),
-          Container(
-            height: h * .07,
-            width: w * .2,
-            decoration: BoxDecoration(
-                image: DecorationImage(image: AssetImage('assets/images/file.png'))
-            ),
-          ),
-          SizedBox(height: 5,),
-          Text('No Data Found',style: TextStyle(color: Colors.grey,fontWeight: FontWeight.w400,fontSize: 10),),
-          SizedBox(height: h * .33,),
+          Obx((){
+            return Column(
+              children: [
+                if(controller.isListView.value)
+                  SizedBox(
+                    height: h * .6,
+                    width: w,
+                    child: ListView.builder(
+                      itemCount: 4,
+                        scrollDirection: Axis.vertical,
+                        itemBuilder: (context,index){
+                          return Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 20,vertical: 10),
+                            child: Container(
+                              height: h * .1,
+                              width: w,
+                              decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  borderRadius: BorderRadius.circular(10)
+                              ),
+                              child: Padding(
+                                padding: const EdgeInsets.symmetric(horizontal: 10),
+                                child: Row(
+                                  children: [
+                                    Container(
+                                      height: h * .07,
+                                      width: w * .15,
+                                      decoration: BoxDecoration(
+                                          color: Colors.grey.shade200,
+                                          borderRadius: BorderRadius.circular(10)
+                                      ),
+                                    ),
+                                    SizedBox(width: 20,),
+                                    Column(
+                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+                                        Text('File Name',style: TextStyle(color: Colors.black,fontWeight: FontWeight.w500,fontSize: 14),),
+                                        Text('20-05-2024   20 Days Left',style: TextStyle(color: Colors.grey,fontWeight: FontWeight.w400,fontSize: 11),),
+                                      ],
+                                    ),
+                                    Spacer(),
+                                    Icon(Icons.arrow_forward_ios,color: Colors.grey,)
+                                  ],
+                                ),
+                              ),
+                            ),
+                          );
+                        }),
+                  ),
+
+                if(!controller.isListView.value)
+                  Center(child: Text('GridView'),),
+
+
+
+
+
+                // Container(
+                //   height: h * .07,
+                //   width: w * .2,
+                //   decoration: BoxDecoration(
+                //       image: DecorationImage(image: AssetImage('assets/images/file.png'))
+                //   ),
+                // ),
+                // SizedBox(height: 5,),
+                // Text('No Data Found',style: TextStyle(color: Colors.grey,fontWeight: FontWeight.w400,fontSize: 10),),
+
+              ],
+            );
+          }),
+          SizedBox(height: h * .1,),
           GestureDetector(
             onTap: (){},
             child: Container(
@@ -133,6 +211,7 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
             ),
           ),
+
         ],
       ),
     );

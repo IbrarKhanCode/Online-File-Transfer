@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:online_file_transfer/controller/sign_in_controller.dart';
 import 'package:online_file_transfer/core/utilis/app_colors.dart';
@@ -106,7 +105,15 @@ class _SigninScreenState extends State<SigninScreen> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  SvgPicture.asset('assets/icons/guest.svg'),
+                  Container(
+                    height: h * .02,
+                    width: w * .05,
+                    decoration: BoxDecoration(
+                        image: DecorationImage(
+                          image: AssetImage('assets/images/guest.png'),
+                        )
+                    ),
+                  ),
                   SizedBox(width: 10,),
                   Text('Continue As Guest',style: TextStyle(color: Colors.white,fontWeight: FontWeight.w600),)
                 ],

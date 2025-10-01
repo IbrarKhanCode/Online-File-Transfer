@@ -40,19 +40,27 @@ final List<Widget> screens = [
             items: [
 
               BottomNavigationBarItem(
-                  icon: ImageIcon(AssetImage('assets/images/home.png')),
+                  icon: controller.selectedIndex.value == 0 ?
+                  ImageIcon(AssetImage('assets/images/selected_home.png'))
+                      : ImageIcon(AssetImage('assets/images/unselected_home.png')),
                   label: 'Home'
               ),
               BottomNavigationBarItem(
-                  icon: ImageIcon(AssetImage('assets/images/files.png')),
+                  icon: controller.selectedIndex.value == 1 ?
+                  ImageIcon(AssetImage('assets/images/selected_files.png'))
+                  : ImageIcon(AssetImage('assets/images/unselected_files.png')),
                   label: 'My Files'
               ),
               BottomNavigationBarItem(
-                  icon: ImageIcon(AssetImage('assets/images/share.png')),
+                  icon: controller.selectedIndex.value == 2 ?
+                  ImageIcon(AssetImage('assets/images/selected_share.png'))
+                  : ImageIcon(AssetImage('assets/images/unselected_share.png')),
                   label: 'Shared'
               ),
               BottomNavigationBarItem(
-                  icon: ImageIcon(AssetImage('assets/images/star.png')),
+                  icon: controller.selectedIndex.value == 3 ?
+                  ImageIcon(AssetImage('assets/images/selected_star.png'))
+                  : ImageIcon(AssetImage('assets/images/unselected_star.png')),
                   label: 'Favorite'
               ),
             ]

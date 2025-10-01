@@ -1,7 +1,10 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:online_file_transfer/controller/home_controller.dart';
 import 'package:online_file_transfer/core/utilis/app_colors.dart';
+import 'package:online_file_transfer/core/widget/custom_container.dart';
 import 'package:online_file_transfer/view/profile/setting_screen.dart';
 
 class MyFilesScreen extends StatefulWidget {
@@ -147,47 +150,82 @@ class _MyFilesScreenState extends State<MyFilesScreen> {
           Obx((){
             return Column(
               children: [
-                if(controller.isListView.value && controller.files.isNotEmpty)
+                if(controller.isListView.value && controller.platformFiles.isNotEmpty)
                   SizedBox(
-                    height: h * .65,
+                    height: h * .74,
                     width: w,
                     child: ListView.builder(
-                        itemCount: controller.fileName.length,
+                        itemCount: controller.platformFiles.length,
                         scrollDirection: Axis.vertical,
                         itemBuilder: (context,index){
+                          final file = controller.platformFiles[index];
+                          final extension = file.extension?.toLowerCase() ?? '';
+                          Widget preview;
+                          if(['png','jpg','jpeg'].contains(extension)){
+                            preview = Container(
+                              height: h * .07,
+                              width: w * .15,
+                              decoration: BoxDecoration(
+                                image: DecorationImage(
+                                  fit: BoxFit.cover,
+                                    image: FileImage(File(file.path!))),
+                                  borderRadius: BorderRadius.circular(10)
+                              ),
+                            );
+                          }
+                          else if(['mp4','mkv','avi'].contains(extension)){
+
+                            preview = CustomContainer(image: 'assets/images/logo.png');
+                          }
+                          else if(['mp3','wav'].contains(extension)){
+
+                            preview = CustomContainer(image: 'assets/images/audio.png');
+                          }
+                          else if(extension == 'pdf'){
+                            preview = CustomContainer(image: 'assets/images/pdf.png');
+                          }
+                          else if(['doc','docx'].contains(extension)){
+
+                            preview = CustomContainer(image: 'assets/images/word.png');
+                          }
+                          else if(extension == 'zip'){
+
+                            preview = CustomContainer(image: 'assets/images/zip.png');
+                          }
+
+                          else{
+                            preview = CustomContainer(image: 'assets/images/unselectedFiles.png');
+                          }
+                          
                           return Padding(
                             padding: const EdgeInsets.symmetric(horizontal: 20,vertical: 5),
                             child: Container(
                               height: h * .1,
                               width: w,
                               decoration: BoxDecoration(
-                                  color: Colors.white,
-                                  borderRadius: BorderRadius.circular(10)
+                                  color: Colors.grey.shade100,
+                                  borderRadius: BorderRadius.circular(10),
                               ),
                               child: Padding(
                                 padding: const EdgeInsets.symmetric(horizontal: 10),
                                 child: Row(
                                   children: [
-                                    Container(
-                                      height: h * .07,
-                                      width: w * .15,
-                                      decoration: BoxDecoration(
-                                          color: Colors.grey.shade200,
-                                          borderRadius: BorderRadius.circular(10)
-                                      ),
-                                    ),
+                                    preview,
                                     SizedBox(width: 20,),
                                     Column(
                                       mainAxisAlignment: MainAxisAlignment.center,
                                       crossAxisAlignment: CrossAxisAlignment.start,
                                       children: [
-                                        Obx((){
-                                          return Text(controller.fileName[index],
+                                        SizedBox(
+                                          width : w * .55,
+                                          child: Text(file.name,
+                                            overflow: TextOverflow.ellipsis,
+                                            maxLines: 2,
                                             style: TextStyle(color: Colors.black,
                                                 fontWeight: FontWeight.w500,
                                                 fontSize: 14),
-                                          );
-                                        }),
+                                          ),
+                                        ),
                                         Row(
                                           children: [
                                             Text('20-05-2024',style: TextStyle(color: Colors.grey,fontWeight: FontWeight.w400,fontSize: 11),),
@@ -204,41 +242,87 @@ class _MyFilesScreenState extends State<MyFilesScreen> {
                               ),
                             ),
                           );
+                          
                         }),
                   ),
 
-                if(!controller.isListView.value && controller.files.isNotEmpty)
+                if(!controller.isListView.value && controller.platformFiles.isNotEmpty)
                   SizedBox(
-                    height: h * .65,
+                    height: h * .74,
                     width: w,
                     child: GridView.builder(
-                        itemCount: controller.fileName.length,
+                        itemCount: controller.platformFiles.length,
                         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                           crossAxisCount: 3,
                           childAspectRatio: 0.6,
                         ),
                         itemBuilder: (context,index){
+                          final file = controller.platformFiles[index];
+                          final extension = file.extension?.toLowerCase() ?? '';
+
+                          Widget preview;
+                          if(['png','jpg','jpeg'].contains(extension)){
+                            preview = Container(
+                              height: h * .12,
+                              width: w * .27,
+                              decoration: BoxDecoration(
+                                  image: DecorationImage(
+                                      fit: BoxFit.cover,
+                                      image: FileImage(File(file.path!))),
+                                  borderRadius: BorderRadius.circular(10),
+                              ),
+                            );
+                          }
+                          else if(['mp4','mkv','avi'].contains(extension)){
+                            preview = CustomContainer(image: 'assets/images/logo.png');
+                          }
+                          else if(['mp3','wav'].contains(extension)){
+
+                            preview = CustomContainer(image: 'assets/images/audio.png');
+                          }
+                          else if(extension == 'pdf'){
+
+                            preview = CustomContainer(image:  'assets/images/pdf.png');
+                          }
+                          else if(['doc','docx'].contains(extension)){
+
+                            preview = CustomContainer(image:  'assets/images/word.png');
+                          }
+                          else if(extension == 'zip'){
+
+                            preview = CustomContainer(image:  'assets/images/zip.png');
+                          }
+                          else{
+
+                            preview = CustomContainer(image:  'assets/images/unselected_files.png');
+                          }
+
                           return Column(
                             crossAxisAlignment: CrossAxisAlignment.center,
                             mainAxisSize: MainAxisSize.min,
                             children: [
                               Container(
                                 height: h * .12,
-                                width: w * .27,
-                                decoration: BoxDecoration(
-                                  color: Colors.white,
-                                  borderRadius: BorderRadius.circular(10),
-                                ),
-                              ),
+                                  width: w * .27,
+                                  decoration: BoxDecoration(
+                                    color: Colors.grey.shade100,
+                                    borderRadius: BorderRadius.circular(10)
+                                  ),
+                                  child: Center(child: preview)),
                               SizedBox(height: 10,),
                               Padding(
                                 padding: const EdgeInsets.symmetric(horizontal: 15),
-                                child: Text(
-                                  textAlign: TextAlign.center,
-                                  controller.fileName[index],
-                                  style: TextStyle(color: Colors.black,
-                                      fontSize: 14,
-                                      fontWeight: FontWeight.w500),
+                                child: SizedBox(
+                                  height : h * .05,
+                                  child: Text(
+                                    textAlign: TextAlign.center,
+                                    overflow: TextOverflow.ellipsis,
+                                    maxLines: 2,
+                                    file.name,
+                                    style: TextStyle(color: Colors.black,
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.w500),
+                                  ),
                                 ),
                               ),
                               Text('20-05-2024',style: TextStyle(color: Colors.grey,fontSize: 11,fontWeight: FontWeight.w400),),
@@ -246,7 +330,7 @@ class _MyFilesScreenState extends State<MyFilesScreen> {
                           );
                         }),
                   ),
-                if(controller.files.isEmpty)...[
+                if(controller.platformFiles.isEmpty)...[
                   SizedBox(height: h * .27,),
                   Container(
                     height: h * .07,
@@ -264,14 +348,18 @@ class _MyFilesScreenState extends State<MyFilesScreen> {
           }),
         ],
       ),
-      floatingActionButton: FloatingActionButton(
-          backgroundColor: AppColors.primaryColor,
+      floatingActionButton: RawMaterialButton(
+          fillColor: AppColors.primaryColor,
           shape: CircleBorder(),
-          child: Icon(Icons.add,color: Colors.white,),
+          constraints:  BoxConstraints.tightFor(
+            width: 80.0,
+            height: 80.0,
+          ),
+          child: Icon(Icons.add,color: Colors.white,size: 40,),
           onPressed: (){
             controller.pickFiles();
           }
-      ),
+          ),
     );
   }
 }

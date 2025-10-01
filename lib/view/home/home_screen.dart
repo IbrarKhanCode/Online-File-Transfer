@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:online_file_transfer/controller/home_controller.dart';
 import 'package:online_file_transfer/core/utilis/app_colors.dart';
+import 'package:online_file_transfer/view/profile/setting_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -14,7 +15,6 @@ class _HomeScreenState extends State<HomeScreen> {
 
   final controller = Get.put(HomeController());
 
-
   @override
   Widget build(BuildContext context) {
 
@@ -23,52 +23,77 @@ class _HomeScreenState extends State<HomeScreen> {
 
     return Scaffold(
 
-      backgroundColor: Colors.grey.shade100,
+      backgroundColor: Colors.white,
       body: Column(
         children: [
-          SizedBox(height: h * .07,),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20),
-            child: Row(
-              children: [
-              Container(
-              height: h * .03,
-              width: w * .05,
-              decoration: BoxDecoration(
-                  image: DecorationImage(
-                      image: AssetImage('assets/images/side_bar.png'),
-                  )
-              ),
+          Container(
+            height: h * .11,
+            width: w,
+            decoration: BoxDecoration(
+              color: Colors.grey.shade100,
             ),
-                SizedBox(width: 20,),
-                Text('APP LOGO',style: TextStyle(color: AppColors.primaryColor,fontWeight: FontWeight.w700,fontSize: 20),),
-                Spacer(),
-                Container(
-                  height: h * .04,
-                  width: w * .1,
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    shape: BoxShape.circle,
-                  ),
-                  child: Center(
-                    child: Stack(
-                      children: [
-                        Align(
-                            alignment: Alignment.center,
-                            child: Icon(Icons.notifications_none,color: Colors.black,)),
-                        Positioned(
-                          left: 23,
-                          top: 10,
-                          child: Badge(
-
-                            backgroundColor: AppColors.primaryColor,
-                          ),
-                        ),
-                      ],
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20),
+              child: Column(
+                children: [
+                  SizedBox(height: h * .05,),
+                  Row(
+                    children: [
+                    Container(
+                    height: h * .04,
+                    width: w * .09,
+                    decoration: BoxDecoration(
+                        image: DecorationImage(
+                            image: AssetImage('assets/images/logo.png'),
+                        )
                     ),
                   ),
-                ),
-              ],
+                      SizedBox(width: 10,),
+                      Text('Online File Transfer',style: TextStyle(color: Colors.black,fontWeight: FontWeight.w600,fontSize: 16),),
+                      Spacer(),
+                      Container(
+                        height: h * .04,
+                        width: w * .1,
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          shape: BoxShape.circle,
+                        ),
+                        child: Center(
+                          child: Stack(
+                            children: [
+                              Align(
+                                  alignment: Alignment.center,
+                                  child: Icon(Icons.notifications_none,color: Colors.black,)),
+                              Positioned(
+                                left: 23,
+                                top: 10,
+                                child: Badge(
+
+                                  backgroundColor: AppColors.primaryColor,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                      SizedBox(width: 10,),
+                      GestureDetector(
+                        onTap: (){
+                          Get.to(SettingScreen());
+                        },
+                        child: Container(
+                          height: h * .05,
+                          width: w * .1,
+                          decoration: BoxDecoration(
+                            image: DecorationImage(image: AssetImage('assets/images/profile.png')),
+                            shape: BoxShape.circle,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
             ),
           ),
           SizedBox(height: 20,),
@@ -81,17 +106,17 @@ class _HomeScreenState extends State<HomeScreen> {
                   height: h * .05,
                   child: TextField(
                     decoration: InputDecoration(
-                      fillColor: Colors.white,
+                      fillColor: Colors.grey.shade100,
                         filled: true,
                         prefixIcon: Icon(Icons.search,color: Colors.grey,),
                         hintStyle: TextStyle(color: Colors.grey,fontSize: 14,fontWeight: FontWeight.w400),
                         hintText: 'Search Here',
                         enabledBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(8),
+                          borderRadius: BorderRadius.circular(30),
                           borderSide: BorderSide(color: Colors.transparent),
                         ),
                         focusedBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10),
+                          borderRadius: BorderRadius.circular(30),
                           borderSide: BorderSide(color: AppColors.primaryColor),
                         )
                     ),
@@ -119,9 +144,6 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
           ),
           SizedBox(height: 10,),
-          Divider(
-            color: Colors.grey,
-          ),
           Obx((){
             return Column(
               children: [
@@ -235,33 +257,20 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                   SizedBox(height: 5,),
                   Text('No Data Found',style: TextStyle(color: Colors.grey,fontWeight: FontWeight.w400,fontSize: 10),),
-                  SizedBox(height: h * .29,),
+                  SizedBox(height: h * .15,),
                 ],
-                GestureDetector(
-                  onTap: (){
-                    controller.pickFiles();
-                  },
-                  child: Container(
-                    height: h * .06,
-                    width: w * .9,
-                    decoration: BoxDecoration(
-                      color: Colors.black,
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Icon(Icons.add,color: Colors.white,),
-                        SizedBox(width: 10,),
-                        Text('Upload File',style: TextStyle(color: Colors.white,fontSize: 12,fontWeight: FontWeight.w600),)
-                      ],
-                    ),
-                  ),
-                ),
               ],
             );
           }),
         ],
+      ),
+      floatingActionButton: FloatingActionButton(
+        backgroundColor: AppColors.primaryColor,
+          shape: CircleBorder(),
+          child: Icon(Icons.add,color: Colors.white,),
+          onPressed: (){
+            controller.pickFiles();
+          }
       ),
     );
   }

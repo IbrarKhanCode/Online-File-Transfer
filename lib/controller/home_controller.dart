@@ -9,6 +9,7 @@ class HomeController extends GetxController {
   var fileName = <String>[].obs;
   var files = <File>[].obs;
   var selectedIndex = 0.obs;
+  var platformFiles = <PlatformFile>[].obs;
 
   void toggleView(){
     isListView.value = !isListView.value;
@@ -18,11 +19,13 @@ class HomeController extends GetxController {
 
 
     FilePickerResult? result = await FilePicker.platform.pickFiles(
-      allowMultiple: true
+      allowMultiple: true,
+      type: FileType.any,
     );
     if(result != null){
       files.value = result.paths.map((path) => File(path!)).toList();
       fileName.value = result.names.map((name) => name!).toList();
+      platformFiles.addAll(result.files);
     }
   }
 

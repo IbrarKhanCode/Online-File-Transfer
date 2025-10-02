@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:file_picker/file_picker.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 
 class HomeController extends GetxController {
@@ -10,6 +11,13 @@ class HomeController extends GetxController {
   var files = <File>[].obs;
   var selectedIndex = 0.obs;
   var platformFiles = <PlatformFile>[].obs;
+  TextEditingController nameController = TextEditingController();
+
+  void uploadName(String text){
+
+    nameController.text = text;
+
+  }
 
   void toggleView(){
     isListView.value = !isListView.value;
@@ -32,4 +40,5 @@ class HomeController extends GetxController {
   void onTapped(int index){
     selectedIndex.value = index;
   }
+
 }

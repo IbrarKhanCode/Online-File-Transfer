@@ -43,28 +43,33 @@ class _SigninScreenState extends State<SigninScreen> {
             'Save your files and share\n'
           'with your friends',style: TextStyle(color: Colors.black,fontWeight: FontWeight.w500,fontSize: 14),),
           SizedBox(height: h * .1,),
-          GestureDetector(
-            onTap: (){
-              controller.googleSignIn();
-            },
-            child: Container(
-              height: h * .06,
-              width: w * .9,
-              decoration: BoxDecoration(
-                color: Colors.grey.shade50,
-                borderRadius: BorderRadius.circular(10),
-                border: Border.all(color: AppColors.primaryColor),
+          Obx((){
+            return controller.isLoading.value ? CircularProgressIndicator(
+              color: AppColors.primaryColor,
+            )
+                : GestureDetector(
+              onTap: (){
+                controller.googleSignIn();
+              },
+              child: Container(
+                height: h * .06,
+                width: w * .9,
+                decoration: BoxDecoration(
+                  color: Colors.grey.shade50,
+                  borderRadius: BorderRadius.circular(10),
+                  border: Border.all(color: AppColors.primaryColor),
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Image.asset('assets/images/google.png'),
+                    SizedBox(width: 10,),
+                    Text('Continue With Google',style: TextStyle(color: AppColors.primaryColor,fontWeight: FontWeight.w600),)
+                  ],
+                ),
               ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Image.asset('assets/images/google.png'),
-                  SizedBox(width: 10,),
-                  Text('Continue With Google',style: TextStyle(color: AppColors.primaryColor,fontWeight: FontWeight.w600),)
-                ],
-              ),
-            ),
-          ),
+            );
+          }),
           SizedBox(height: 20,),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,

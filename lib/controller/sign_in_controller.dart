@@ -8,16 +8,15 @@ import 'package:online_file_transfer/view/home/bottom_view.dart';
 class SignInController extends GetxController{
 
   FirebaseAuth auth = FirebaseAuth.instance;
+  RxBool isLoading = false.obs;
 
   Future<void> googleSignIn() async {
-
+    isLoading.value = true;
     try{
-      await auth.signOut();
-      GoogleSignIn().signOut();
-      await Future.delayed(Duration(milliseconds: 300));
 
       final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
       if(googleUser == null){
+        isLoading.value = false;
         Get.snackbar(
           'Cancelled',
           'Sign-in canceller by User',
@@ -43,9 +42,12 @@ class SignInController extends GetxController{
       if(user != null){
         await FirebaseFirestore.instance.collection('users').doc(user.uid).set({
           'email' : user.email,
+          'name' : user.displayName,
+          'photoUrl' : user.photoURL,
           'createAt' : DateTime.now(),
         }); SetOptions(merge: true);
       }
+      isLoading.value = false;
       Get.snackbar(
         'Congratulation',
         'You have Successfully signIn with Google',
@@ -59,6 +61,7 @@ class SignInController extends GetxController{
       Get.offAll(BottomView());
 
     } catch (e) {
+      isLoading.value = false;
       Get.snackbar(
         'Error',
         e.toString(),

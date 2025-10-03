@@ -27,43 +27,93 @@ final List<Widget> screens = [
 
   @override
   Widget build(BuildContext context) {
+
+    double h = MediaQuery.of(context).size.height;
+    double w = MediaQuery.of(context).size.width;
+
     return Obx((){
       return Scaffold(
-        bottomNavigationBar: BottomNavigationBar(
-            currentIndex: controller.selectedIndex.value,
-            onTap: controller.onTapped,
-            backgroundColor: Colors.white,
-            type: BottomNavigationBarType.fixed,
-            selectedItemColor: AppColors.primaryColor,
-            unselectedItemColor: Colors.grey,
+        bottomNavigationBar: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Container(
+              color: Colors.white,
+              child: Divider(
+                color: Colors.grey.shade300,
+                thickness: 1,
+                height: 1,
+              ),
+            ),
+            SizedBox(
+              height: h * .08,
+              child: BottomNavigationBar(
+                  currentIndex: controller.selectedIndex.value,
+                  onTap: controller.onTapped,
+                  backgroundColor: Colors.white,
+                  type: BottomNavigationBarType.fixed,
+                  selectedItemColor: AppColors.primaryColor,
+                  unselectedItemColor: Colors.grey,
+                  selectedLabelStyle: TextStyle(
+                    fontWeight: FontWeight.w600,
+                    fontSize: 13
+                  ),
+                  unselectedLabelStyle: TextStyle(
+                    fontWeight: FontWeight.w500
+                  ),
 
-            items: [
-
-              BottomNavigationBarItem(
-                  icon: controller.selectedIndex.value == 0 ?
-                  ImageIcon(AssetImage('assets/images/selected_home.png'))
-                      : ImageIcon(AssetImage('assets/images/unselected_home.png')),
-                  label: 'Home'
+                  items: [
+                    BottomNavigationBarItem(
+                      icon: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          controller.selectedIndex.value == 0 ?
+                              ImageIcon(AssetImage('assets/images/selected_home.png'))
+                              : ImageIcon(AssetImage('assets/images/unselected_home.png')),
+                          SizedBox(height: 7,)
+                        ],
+                      ),
+                        label: 'Home'
+                    ),
+                    BottomNavigationBarItem(
+                        icon: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            controller.selectedIndex.value == 1 ?
+                            ImageIcon(AssetImage('assets/images/selected_files.png'))
+                                : ImageIcon(AssetImage('assets/images/unselected_files.png')),
+                            SizedBox(height: 7,)
+                          ],
+                        ),
+                        label: 'My Files'
+                    ),
+                    BottomNavigationBarItem(
+                        icon: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            controller.selectedIndex.value == 2 ?
+                            ImageIcon(AssetImage('assets/images/selected_share.png'))
+                                : ImageIcon(AssetImage('assets/images/unselected_share.png')),
+                            SizedBox(height: 7,)
+                          ],
+                        ),
+                        label: 'Shared'
+                    ),
+                    BottomNavigationBarItem(
+                        icon: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            controller.selectedIndex.value == 3 ?
+                            ImageIcon(AssetImage('assets/images/selected_star.png'))
+                                : ImageIcon(AssetImage('assets/images/unselected_star.png')),
+                            SizedBox(height: 7,)
+                          ],
+                        ),
+                        label: 'Favourite'
+                    ),
+                  ]
               ),
-              BottomNavigationBarItem(
-                  icon: controller.selectedIndex.value == 1 ?
-                  ImageIcon(AssetImage('assets/images/selected_files.png'))
-                  : ImageIcon(AssetImage('assets/images/unselected_files.png')),
-                  label: 'My Files'
-              ),
-              BottomNavigationBarItem(
-                  icon: controller.selectedIndex.value == 2 ?
-                  ImageIcon(AssetImage('assets/images/selected_share.png'))
-                  : ImageIcon(AssetImage('assets/images/unselected_share.png')),
-                  label: 'Shared'
-              ),
-              BottomNavigationBarItem(
-                  icon: controller.selectedIndex.value == 3 ?
-                  ImageIcon(AssetImage('assets/images/selected_star.png'))
-                  : ImageIcon(AssetImage('assets/images/unselected_star.png')),
-                  label: 'Favorite'
-              ),
-            ]
+            ),
+          ],
         ),
         body: screens[controller.selectedIndex.value],
       );

@@ -24,261 +24,274 @@ class _ShareScreenState extends State<ShareScreen> {
     return Scaffold(
 
       backgroundColor: Colors.white,
-      body: SafeArea(
-        child: Column(
-          children: [
-            Container(
-              height: h * .09,
-              width: w,
-              decoration: BoxDecoration(
-                color: Colors.grey.shade100,
-              ),
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 20),
-                child: Column(
-                  children: [
-                    SizedBox(height: h * .03,),
-                    Row(
-                      children: [
-                        Container(
-                          height: h * .04,
-                          width: w * .09,
-                          decoration: BoxDecoration(
-                              image: DecorationImage(
-                                image: AssetImage('assets/images/logo.png'),
-                              )
-                          ),
-                        ),
-                        SizedBox(width: 10,),
-                        Text('Shared Files',style: TextStyle(color: Colors.black,fontWeight: FontWeight.w600,fontSize: 16),),
-                        Spacer(),
-                        Container(
-                          height: h * .04,
-                          width: w * .1,
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            shape: BoxShape.circle,
-                          ),
-                          child: Center(
-                            child: Stack(
-                              children: [
-                                Align(
-                                    alignment: Alignment.center,
-                                    child: Icon(Icons.notifications_none,color: Colors.black,)),
-                                Positioned(
-                                  left: 23,
-                                  top: 10,
-                                  child: Badge(
-        
-                                    backgroundColor: AppColors.primaryColor,
-                                  ),
-                                ),
-                              ],
+      body: SingleChildScrollView(
+        child: SafeArea(
+          child: Column(
+            children: [
+              Container(
+                height: h * .09,
+                width: w,
+                decoration: BoxDecoration(
+                  color: Colors.grey.shade100,
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 15),
+                  child: Column(
+                    children: [
+                      SizedBox(height: h * .02,),
+                      Row(
+                        children: [
+                          Container(
+                            height: h * .033,
+                            width: w * .12,
+                            decoration: BoxDecoration(
+                                image: DecorationImage(
+                                  fit: BoxFit.cover,
+                                  image: AssetImage('assets/images/logo.png'),
+                                )
                             ),
                           ),
-                        ),
-                        SizedBox(width: 10,),
-                        GestureDetector(
-                          onTap: (){
-                            Get.to(SettingScreen());
-                          },
-                          child: Container(
+                          SizedBox(width: 10,),
+                          Text('Online File Transfer',style: TextStyle(color: Colors.black,fontWeight: FontWeight.w600,fontSize: 16),),
+                          Spacer(),
+                          Container(
                             height: h * .05,
-                            width: w * .1,
+                            width: w * .13,
                             decoration: BoxDecoration(
-                              image: DecorationImage(image: AssetImage('assets/images/profile.png')),
+                              color: Colors.white,
                               shape: BoxShape.circle,
                             ),
+                            child: Center(
+                              child: Stack(
+                                children: [
+                                  Align(
+                                      alignment: Alignment.center,
+                                      child: Container(
+                                        height: h * .03,
+                                        width: w * .05,
+                                        decoration: BoxDecoration(
+                                            image: DecorationImage(image: AssetImage('assets/images/notification.png'))
+                                        ),
+                                      )),
+                                  Positioned(
+                                    left: 29,
+                                    top: 12,
+                                    child: Badge(
+                                      backgroundColor: AppColors.primaryColor,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
                           ),
+                          SizedBox(width: 10,),
+                          GestureDetector(
+                            onTap: (){
+                              Get.to(SettingScreen());
+                            },
+                            child: Container(
+                              height: h * .06,
+                              width: w * .13,
+                              decoration: BoxDecoration(
+                                image: DecorationImage(image: AssetImage('assets/images/profile.png')),
+                                shape: BoxShape.circle,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              SizedBox(height: 20,),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 15),
+                child:  Row(
+                  children: [
+                    SizedBox(
+                      width: w * .83,
+                      height: h * .05,
+                      child: TextField(
+                        decoration: InputDecoration(
+                            fillColor: Colors.grey.shade100,
+                            filled: true,
+                            prefixIcon: Icon(Icons.search,color: Colors.grey,),
+                            hintStyle: TextStyle(color: Colors.grey,fontSize: 14,
+                                fontWeight: FontWeight.w500),
+                            hintText: 'Search Here',
+                            enabledBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(30),
+                              borderSide: BorderSide(color: Colors.transparent),
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(30),
+                              borderSide: BorderSide(color: AppColors.primaryColor),
+                            )
                         ),
-                      ],
+                      ),
+                    ),
+                    SizedBox(width: 10,),
+                    GestureDetector(
+                        onTap: (){
+                          controller.toggleView();
+                        },
+                        child: Obx((){
+                          return Container(
+                            height: h * .03,
+                            width: w * .07,
+                            decoration: BoxDecoration(
+                                image: DecorationImage(
+                                  image: controller.isListView.value ? AssetImage('assets/images/grid.png')
+                                      : AssetImage('assets/images/list.png'),
+                                )
+                            ),
+                          );
+                        })
                     ),
                   ],
                 ),
               ),
-            ),
-            SizedBox(height: 20,),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20),
-              child:  Row(
-                children: [
-                  SizedBox(
-                    width: w * .8,
-                    height: h * .05,
-                    child: TextField(
-                      decoration: InputDecoration(
-                          fillColor: Colors.grey.shade100,
-                          filled: true,
-                          prefixIcon: Icon(Icons.search,color: Colors.grey,),
-                          hintStyle: TextStyle(color: Colors.grey,fontSize: 14,fontWeight: FontWeight.w400),
-                          hintText: 'Search Here',
-                          enabledBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(30),
-                            borderSide: BorderSide(color: Colors.transparent),
-                          ),
-                          focusedBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(30),
-                            borderSide: BorderSide(color: AppColors.primaryColor),
-                          )
-                      ),
-                    ),
-                  ),
-                  SizedBox(width: 15,),
-                  GestureDetector(
-                      onTap: (){
-                        controller.toggleView();
-                      },
-                      child: Obx((){
-                        return Container(
-                          height: h * .03,
-                          width: w * .05,
-                          decoration: BoxDecoration(
-                              image: DecorationImage(
-                                image: controller.isListView.value ? AssetImage('assets/images/grid.png')
-                                    : AssetImage('assets/images/list.png'),
-                              )
-                          ),
-                        );
-                      })
-                  ),
-                ],
-              ),
-            ),
-            SizedBox(height: 10,),
-            Obx((){
-              return Column(
-                children: [
-                  if(controller.isListView.value && controller.files.isNotEmpty)
-                    SizedBox(
-                      height: h * .72,
-                      width: w,
-                      child: ListView.builder(
-                          itemCount: controller.fileName.length,
-                          scrollDirection: Axis.vertical,
-                          itemBuilder: (context,index){
-                            return Padding(
-                              padding: const EdgeInsets.symmetric(horizontal: 20,vertical: 5),
-                              child: Container(
-                                height: h * .1,
-                                width: w,
-                                decoration: BoxDecoration(
-                                    color: Colors.white,
-                                    borderRadius: BorderRadius.circular(10)
-                                ),
-                                child: Padding(
-                                  padding: const EdgeInsets.symmetric(horizontal: 10),
-                                  child: Row(
-                                    children: [
-                                      Container(
-                                        height: h * .07,
-                                        width: w * .15,
-                                        decoration: BoxDecoration(
-                                            color: Colors.grey.shade200,
-                                            borderRadius: BorderRadius.circular(10)
-                                        ),
-                                      ),
-                                      SizedBox(width: 20,),
-                                      Column(
-                                        mainAxisAlignment: MainAxisAlignment.center,
-                                        crossAxisAlignment: CrossAxisAlignment.start,
-                                        children: [
-                                        SizedBox(
-                                          width : w * .55,
-                                          child: Text(
-                                            overflow: TextOverflow.ellipsis,
-                                            maxLines: 2,
-                                            controller.fileName[index],
-                                          style: TextStyle(color: Colors.black,
-                                              fontWeight: FontWeight.w500,
-                                              fontSize: 14),
-                                                                                ),
-                                        ),
-                                          Row(
-                                            children: [
-                                              Text('20-05-2024',style: TextStyle(color: Colors.grey,fontWeight: FontWeight.w400,fontSize: 11),),
-                                              SizedBox(width: 10,),
-                                              Text('20-05-2024',style: TextStyle(color: Colors.grey,fontWeight: FontWeight.w400,fontSize: 11),),
-                                            ],
-                                          ),
-                                        ],
-                                      ),
-                                      Spacer(),
-                                      Icon(Icons.arrow_forward_ios,color: Colors.grey,)
-                                    ],
-                                  ),
-                                ),
-                              ),
-                            );
-                          }),
-                    ),
-        
-                  if(!controller.isListView.value && controller.files.isNotEmpty)
-                    SizedBox(
-                      height: h * .72,
-                      width: w,
-                      child: GridView.builder(
-                          itemCount: controller.fileName.length,
-                          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                            crossAxisCount: 3,
-                            childAspectRatio: 0.6,
-                          ),
-                          itemBuilder: (context,index){
-                            return Column(
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                Container(
-                                  height: h * .12,
-                                  width: w * .27,
+              SizedBox(height: 10,),
+              Obx((){
+                return Column(
+                  children: [
+                    if(controller.isListView.value && controller.files.isNotEmpty)
+                      SizedBox(
+                        height: h * .715,
+                        width: w,
+                        child: ListView.builder(
+                            itemCount: controller.fileName.length,
+                            scrollDirection: Axis.vertical,
+                            itemBuilder: (context,index){
+                              return Padding(
+                                padding: const EdgeInsets.symmetric(horizontal: 20,vertical: 5),
+                                child: Container(
+                                  height: h * .1,
+                                  width: w,
                                   decoration: BoxDecoration(
-                                    color: Colors.white,
-                                    borderRadius: BorderRadius.circular(10),
+                                      color: Colors.white,
+                                      borderRadius: BorderRadius.circular(10)
                                   ),
-                                ),
-                                SizedBox(height: 10,),
-                                Padding(
-                                  padding: const EdgeInsets.symmetric(horizontal: 15),
-                                  child: SizedBox(
-                                    height : h * .05,
-                                    child: Text(
-                                      textAlign: TextAlign.center,
-                                      overflow: TextOverflow.ellipsis,
-                                      maxLines: 2,
-                                      controller.fileName[index],
-                                      style: TextStyle(color: Colors.black,
-                                          fontSize: 14,
-                                          fontWeight: FontWeight.w500),
+                                  child: Padding(
+                                    padding: const EdgeInsets.symmetric(horizontal: 10),
+                                    child: Row(
+                                      children: [
+                                        Container(
+                                          height: h * .07,
+                                          width: w * .15,
+                                          decoration: BoxDecoration(
+                                              color: Colors.grey.shade200,
+                                              borderRadius: BorderRadius.circular(10)
+                                          ),
+                                        ),
+                                        SizedBox(width: 20,),
+                                        Column(
+                                          mainAxisAlignment: MainAxisAlignment.center,
+                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          children: [
+                                          SizedBox(
+                                            width : w * .55,
+                                            child: Text(
+                                              overflow: TextOverflow.ellipsis,
+                                              maxLines: 2,
+                                              controller.fileName[index],
+                                            style: TextStyle(color: Colors.black,
+                                                fontWeight: FontWeight.w500,
+                                                fontSize: 14),
+                                                                                  ),
+                                          ),
+                                            Row(
+                                              children: [
+                                                Text('20-05-2024',style: TextStyle(color: Colors.grey,fontWeight: FontWeight.w400,fontSize: 11),),
+                                                SizedBox(width: 10,),
+                                                Text('20-05-2024',style: TextStyle(color: Colors.grey,fontWeight: FontWeight.w400,fontSize: 11),),
+                                              ],
+                                            ),
+                                          ],
+                                        ),
+                                        Spacer(),
+                                        Icon(Icons.arrow_forward_ios,color: Colors.grey,)
+                                      ],
                                     ),
                                   ),
                                 ),
-                                Text('20-05-2024',style: TextStyle(color: Colors.grey,fontSize: 11,fontWeight: FontWeight.w400),),
-                              ],
-                            );
-                          }),
-                    ),
-                  if(controller.files.isEmpty)...[
-                    SizedBox(height: h * .27,),
-                    Container(
-                      height: h * .07,
-                      width: w * .2,
-                      decoration: BoxDecoration(
-                        image: DecorationImage(image: AssetImage('assets/images/file.png')),
+                              );
+                            }),
                       ),
-                    ),
-                    SizedBox(height: 5,),
-                    Text('No Data Found',style: TextStyle(color: Colors.grey,fontWeight: FontWeight.w400,fontSize: 10),),
-                    SizedBox(height: h * .15,),
+
+                    if(!controller.isListView.value && controller.files.isNotEmpty)
+                      SizedBox(
+                        height: h * .72,
+                        width: w,
+                        child: GridView.builder(
+                            itemCount: controller.fileName.length,
+                            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                              crossAxisCount: 3,
+                              childAspectRatio: 0.6,
+                            ),
+                            itemBuilder: (context,index){
+                              return Column(
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  Container(
+                                    height: h * .12,
+                                    width: w * .27,
+                                    decoration: BoxDecoration(
+                                      color: Colors.white,
+                                      borderRadius: BorderRadius.circular(10),
+                                    ),
+                                  ),
+                                  SizedBox(height: 10,),
+                                  Padding(
+                                    padding: const EdgeInsets.symmetric(horizontal: 15),
+                                    child: SizedBox(
+                                      height : h * .05,
+                                      child: Text(
+                                        textAlign: TextAlign.center,
+                                        overflow: TextOverflow.ellipsis,
+                                        maxLines: 2,
+                                        controller.fileName[index],
+                                        style: TextStyle(color: Colors.black,
+                                            fontSize: 14,
+                                            fontWeight: FontWeight.w500),
+                                      ),
+                                    ),
+                                  ),
+                                  Text('20-05-2024',style: TextStyle(color: Colors.grey,fontSize: 11,fontWeight: FontWeight.w400),),
+                                ],
+                              );
+                            }),
+                      ),
+                    if(controller.files.isEmpty)...[
+                      SizedBox(height: h * .27,),
+                      Container(
+                        height: h * .07,
+                        width: w * .2,
+                        decoration: BoxDecoration(
+                          image: DecorationImage(image: AssetImage('assets/images/file.png')),
+                        ),
+                      ),
+                      SizedBox(height: 5,),
+                      Text('No Data Found',style: TextStyle(color: Colors.grey,fontWeight: FontWeight.w400,fontSize: 10),),
+                      SizedBox(height: h * .15,),
+                    ],
                   ],
-                ],
-              );
-            }),
-          ],
+                );
+              }),
+            ],
+          ),
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-          backgroundColor: AppColors.primaryColor,
+      floatingActionButton: RawMaterialButton(
+          fillColor: AppColors.primaryColor,
           shape: CircleBorder(),
-          child: Icon(Icons.add,color: Colors.white,),
+          constraints:  BoxConstraints.tightFor(
+            width: 80.0,
+            height: 80.0,
+          ),
+          child: Icon(Icons.add,color: Colors.white,size: 40,),
           onPressed: (){
             controller.pickFiles();
           }

@@ -10,6 +10,7 @@ class HomeController extends GetxController {
   var fileName = <String>[].obs;
   var files = <File>[].obs;
   var selectedIndex = 0.obs;
+  var filteredFiles = <PlatformFile>[].obs;
   var platformFiles = <PlatformFile>[].obs;
   TextEditingController nameController = TextEditingController();
 
@@ -34,6 +35,18 @@ class HomeController extends GetxController {
       files.value = result.paths.map((path) => File(path!)).toList();
       fileName.value = result.names.map((name) => name!).toList();
       platformFiles.addAll(result.files);
+      filteredFiles.addAll(result.files);
+    }
+  }
+
+  void filterFiles(String query){
+    if(query.isEmpty){
+      filteredFiles.assignAll(platformFiles);
+    }
+    else{
+      filteredFiles.assignAll(
+       platformFiles.where((file) => file.name.toLowerCase().contains(query.toLowerCase())).toList()
+      );
     }
   }
 

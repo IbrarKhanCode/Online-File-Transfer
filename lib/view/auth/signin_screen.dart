@@ -41,7 +41,8 @@ class _SigninScreenState extends State<SigninScreen> {
           Text(
             textAlign: TextAlign.center,
             'Save your files and share\n'
-          'with your friends',style: TextStyle(color: Colors.black,fontWeight: FontWeight.w500,fontSize: 14),),
+          'with your friends',style: TextStyle(color: Color(0xff333333),
+              fontWeight: FontWeight.w500,fontSize: 14),),
           SizedBox(height: h * .1,),
           Obx((){
             return controller.isLoading.value ? CircularProgressIndicator(
@@ -62,7 +63,15 @@ class _SigninScreenState extends State<SigninScreen> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Image.asset('assets/images/google.png'),
+                    Container(
+                      height: h * .03,
+                      width: w * .05,
+                      decoration: BoxDecoration(
+                        image: DecorationImage(
+                          fit: BoxFit.contain,
+                            image: AssetImage('assets/images/google.png'))
+                      ),
+                    ),
                     SizedBox(width: 10,),
                     Text('Continue With Google',style: TextStyle(color: AppColors.primaryColor,fontWeight: FontWeight.w600),)
                   ],
@@ -111,10 +120,11 @@ class _SigninScreenState extends State<SigninScreen> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Container(
-                    height: h * .02,
+                    height: h * .025,
                     width: w * .05,
                     decoration: BoxDecoration(
                         image: DecorationImage(
+                          fit: BoxFit.contain,
                           image: AssetImage('assets/images/guest.png'),
                         )
                     ),

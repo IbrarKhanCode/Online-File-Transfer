@@ -29,7 +29,7 @@ class _SettingScreenState extends State<SettingScreen> {
         child: Column(
           children: [
             Container(
-              height: h * .08,
+              height: h * .07,
               width: w,
               decoration: BoxDecoration(
                 color: Colors.grey.shade100,
@@ -38,7 +38,7 @@ class _SettingScreenState extends State<SettingScreen> {
                 padding: const EdgeInsets.symmetric(horizontal: 5),
                 child: Column(
                   children: [
-                    SizedBox(height: h * .02,),
+                    SizedBox(height: h * .01,),
                     Row(
                       children: [
                         IconButton(

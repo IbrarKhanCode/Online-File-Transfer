@@ -176,29 +176,24 @@ class _MyFilesScreenState extends State<MyFilesScreen> {
                               );
                             }
                             else if(['mp4','mkv','avi'].contains(extension)){
-        
                               preview = CustomContainer(image: 'assets/images/logo.png');
                             }
                             else if(['mp3','wav'].contains(extension)){
-        
                               preview = CustomContainer(image: 'assets/images/audio.png');
                             }
                             else if(extension == 'pdf'){
                               preview = CustomContainer(image: 'assets/images/pdf.png');
                             }
                             else if(['doc','docx'].contains(extension)){
-        
                               preview = CustomContainer(image: 'assets/images/word.png');
                             }
                             else if(extension == 'zip'){
-        
                               preview = CustomContainer(image: 'assets/images/zip.png');
                             }
-        
                             else{
                               preview = CustomContainer(image: 'assets/images/unselectedFiles.png');
                             }
-                            
+
                             return Padding(
                               padding: const EdgeInsets.symmetric(horizontal: 20,vertical: 5),
                               child: Container(
@@ -244,7 +239,7 @@ class _MyFilesScreenState extends State<MyFilesScreen> {
                                 ),
                               ),
                             );
-                            
+
                           }),
                     ),
         
@@ -259,13 +254,11 @@ class _MyFilesScreenState extends State<MyFilesScreen> {
                             crossAxisCount: 3,
                             mainAxisSpacing: 0,
                             crossAxisSpacing: 0,
-                            // childAspectRatio: 0.6,
-                            mainAxisExtent: 190
+                            mainAxisExtent: 190,
                           ),
                           itemBuilder: (context,index){
                             final file = controller.platformFiles[index];
                             final extension = file.extension?.toLowerCase() ?? '';
-        
                             Widget preview;
                             if(['png','jpg','jpeg'].contains(extension)){
                               preview = Container(
@@ -283,26 +276,21 @@ class _MyFilesScreenState extends State<MyFilesScreen> {
                               preview = CustomContainer(image: 'assets/images/logo.png');
                             }
                             else if(['mp3','wav'].contains(extension)){
-        
                               preview = CustomContainer(image: 'assets/images/audio.png');
                             }
                             else if(extension == 'pdf'){
-        
                               preview = CustomContainer(image:  'assets/images/pdf.png');
                             }
                             else if(['doc','docx'].contains(extension)){
-        
                               preview = CustomContainer(image:  'assets/images/word.png');
                             }
                             else if(extension == 'zip'){
-        
                               preview = CustomContainer(image:  'assets/images/zip.png');
                             }
                             else{
-        
                               preview = CustomContainer(image:  'assets/images/unselected_files.png');
                             }
-        
+
                             return Column(
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
@@ -316,14 +304,14 @@ class _MyFilesScreenState extends State<MyFilesScreen> {
                                     child: Center(child: preview)),
                                 SizedBox(height: 10,),
                                 SizedBox(
-                                  height : h * .05,
+                                  height : h * .045,
                                   child: Text(
                                     textAlign: TextAlign.center,
                                     overflow: TextOverflow.ellipsis,
                                     maxLines: 2,
                                     file.name,
                                     style: TextStyle(color: Colors.black,
-                                        fontSize: 14,
+                                        fontSize: 12,
                                         fontWeight: FontWeight.w500),
                                   ),
                                 ),

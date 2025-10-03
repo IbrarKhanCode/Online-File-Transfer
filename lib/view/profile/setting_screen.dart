@@ -2,6 +2,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:online_file_transfer/core/utilis/app_colors.dart';
+import 'package:online_file_transfer/core/widget/user_data_column.dart';
 import 'package:online_file_transfer/view/profile/account_setting.dart';
 
 class SettingScreen extends StatefulWidget {
@@ -52,60 +54,43 @@ class _SettingScreenState extends State<SettingScreen> {
               ),
             ),
             SizedBox(height: 20,),
-            StreamBuilder<DocumentSnapshot>(
-                stream: FirebaseFirestore.instance.collection('users').doc(user!.uid).snapshots(),
-                builder: (context,snapshot){
-                  if(!snapshot.hasData || !snapshot.data!.exists){
+
+            if(user == null)...[
+              UserDataColumn(),
+            ]
+           else...[
+              StreamBuilder<DocumentSnapshot>(
+                  stream: FirebaseFirestore.instance.collection('users').doc(user!.uid).snapshots(),
+                  builder: (context,snapshot){
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return Center(child: CircularProgressIndicator(
+                        color: AppColors.primaryColor,
+                      ));
+                    }
+                    if(!snapshot.hasData || !snapshot.data!.exists){
+                      return UserDataColumn();
+                    }
+                    var userData = snapshot.data!.data() as Map<String, dynamic>?;
+                    if(userData == null || userData.isEmpty){
+                      return UserDataColumn();
+                    }
                     return Column(
                       children: [
-                        Container(
-                          height: h * .08,
-                          width: w * .17,
-                          decoration: BoxDecoration(
-                            image: DecorationImage(image: AssetImage('assets/images/profileTwo.png')),
-                          ),
+                        CircleAvatar(
+                          backgroundImage: userData['photoUrl'] != null ?
+                          NetworkImage(userData['photoUrl']) : AssetImage('assets/images/profileTwo.png'),
+                          radius: 40,
                         ),
                         SizedBox(height: 10,),
-                        Text('Name : User has not signup',style: TextStyle(color: Colors.black,fontWeight: FontWeight.w600,fontSize: 14),),
-                        Text('Gmail : User has not signup',
+                        Text(userData['name'] ?? 'Name : User has not signup',style: TextStyle(color: Colors.black,fontWeight: FontWeight.w600,fontSize: 14),),
+                        Text(userData['email'] ?? 'Gmail : User has not signup',
                           style: TextStyle(color: Colors.grey,
                               fontWeight: FontWeight.w500,fontSize: 12),),
                       ],
                     );
-                  }
-                  var userData = snapshot.data!.data() as Map<String, dynamic>?;
-                  if(userData == null || userData.isEmpty){
-                    return Column(
-                      children: [
-                        Container(
-                          height: h * .08,
-                          width: w * .17,
-                          decoration: BoxDecoration(
-                            image: DecorationImage(image: AssetImage('assets/images/profileTwo.png')),
-                          ),
-                        ),
-                        SizedBox(height: 10,),
-                        Text('Name : User has not signup',style: TextStyle(color: Colors.black,fontWeight: FontWeight.w600,fontSize: 14),),
-                        Text('Gmail : User has not signup',
-                          style: TextStyle(color: Colors.grey,
-                              fontWeight: FontWeight.w500,fontSize: 12),),
-                      ],
-                    );
-                  }
-                  return Column(
-                    children: [
-                      CircleAvatar(
-                        backgroundImage: NetworkImage(userData['photoUrl']),
-                        radius: 40,
-                      ),
-                      SizedBox(height: 10,),
-                      Text(userData['name'],style: TextStyle(color: Colors.black,fontWeight: FontWeight.w600,fontSize: 14),),
-                      Text(userData['email'],
-                        style: TextStyle(color: Colors.grey,
-                            fontWeight: FontWeight.w500,fontSize: 12),),
-                    ],
-                  );
-                }),
+                  }),
+            ],
+
             SizedBox(height: 20,),
             GestureDetector(
               onTap: (){

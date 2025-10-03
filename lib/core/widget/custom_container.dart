@@ -11,11 +11,11 @@ class CustomContainer extends StatelessWidget {
     double w = MediaQuery.of(context).size.width;
 
     return Container(
-      height: h * .07,
+      height: h * .06,
       width: w * .15,
       decoration: BoxDecoration(
           image: DecorationImage(
-              fit: BoxFit.cover,
+              fit: BoxFit.contain,
               image: AssetImage(image)),
       ),
     );

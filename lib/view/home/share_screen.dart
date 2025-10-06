@@ -90,8 +90,8 @@ class _ShareScreenState extends State<ShareScreen> {
                               Get.to(SettingScreen());
                             },
                             child: Container(
-                              height: h * .06,
-                              width: w * .13,
+                              height: h * .052,
+                              width: w * .12,
                               decoration: BoxDecoration(
                                 image: DecorationImage(image: AssetImage('assets/images/profile.png')),
                                 shape: BoxShape.circle,
@@ -106,11 +106,11 @@ class _ShareScreenState extends State<ShareScreen> {
               ),
               SizedBox(height: 20,),
               Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 15),
+                padding: const EdgeInsets.symmetric(horizontal: 10),
                 child:  Row(
                   children: [
                     SizedBox(
-                      width: w * .83,
+                      width: w * .84,
                       height: h * .05,
                       child: TextField(
                         decoration: InputDecoration(
@@ -165,7 +165,7 @@ class _ShareScreenState extends State<ShareScreen> {
                             scrollDirection: Axis.vertical,
                             itemBuilder: (context,index){
                               return Padding(
-                                padding: const EdgeInsets.symmetric(horizontal: 20,vertical: 5),
+                                padding: const EdgeInsets.symmetric(horizontal: 10,vertical: 5),
                                 child: Container(
                                   height: h * .1,
                                   width: w,

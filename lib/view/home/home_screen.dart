@@ -52,7 +52,8 @@ class _HomeScreenState extends State<HomeScreen> {
                             ),
                           ),
                           SizedBox(width: 10,),
-                          Text('Online File Transfer',style: TextStyle(color: Colors.black,fontWeight: FontWeight.w600,fontSize: 16),),
+                          Text('Online File Transfer',style: TextStyle(color: Colors.black,
+                              fontWeight: FontWeight.w600,fontSize: 16),),
                           Spacer(),
                           Container(
                             height: h * .05,
@@ -90,8 +91,8 @@ class _HomeScreenState extends State<HomeScreen> {
                               Get.to(SettingScreen());
                             },
                             child: Container(
-                              height: h * .06,
-                              width: w * .13,
+                              height: h * .052,
+                              width: w * .12,
                               decoration: BoxDecoration(
                                 image: DecorationImage(image: AssetImage('assets/images/profile.png')),
                                 shape: BoxShape.circle,
@@ -106,11 +107,11 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
               SizedBox(height: 20,),
               Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 15),
+                padding: const EdgeInsets.symmetric(horizontal: 10),
                 child:  Row(
                   children: [
                     SizedBox(
-                      width: w * .83,
+                      width: w * .84,
                       height: h * .05,
                       child: TextField(
                         decoration: InputDecoration(
@@ -165,7 +166,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             scrollDirection: Axis.vertical,
                             itemBuilder: (context,index){
                               return Padding(
-                                padding: const EdgeInsets.symmetric(horizontal: 20,vertical: 5),
+                                padding: const EdgeInsets.symmetric(horizontal: 10,vertical: 5),
                                 child: Container(
                                   height: h * .1,
                                   width: w,

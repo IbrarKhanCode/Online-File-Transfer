@@ -79,7 +79,7 @@ class _SigninScreenState extends State<SigninScreen> {
               ),
             );
           }),
-          SizedBox(height: 20,),
+          SizedBox(height: h * .02,),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
@@ -99,12 +99,12 @@ class _SigninScreenState extends State<SigninScreen> {
                 width: w * .27,
                 decoration: BoxDecoration(
                     color: Colors.grey.shade300,
-                    borderRadius: BorderRadius.circular(3)
+                    borderRadius: BorderRadius.circular(3),
                 ),
               ),
             ],
           ),
-          SizedBox(height: 20,),
+          SizedBox(height: h * .02,),
           GestureDetector(
             onTap: (){
               Get.offAll(BottomView());
@@ -135,7 +135,7 @@ class _SigninScreenState extends State<SigninScreen> {
               ),
             ),
           ),
-          SizedBox(height: 20,),
+          SizedBox(height: h * .02 ,),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
@@ -155,7 +155,7 @@ class _SigninScreenState extends State<SigninScreen> {
                 'Privacy Policy.',style: TextStyle(decoration: TextDecoration.underline,
                   color: Colors.black,fontSize: 13),),
             ],
-          )
+          ),
         ],
       ),
     );

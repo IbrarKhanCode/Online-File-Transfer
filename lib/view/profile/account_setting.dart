@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:online_file_transfer/controller/home_controller.dart';
+import 'package:online_file_transfer/controller/sign_in_controller.dart';
 import 'package:online_file_transfer/core/utilis/app_colors.dart';
 import 'package:online_file_transfer/core/widget/user_data_column.dart';
 
@@ -17,6 +18,8 @@ class _AccountSettingState extends State<AccountSetting> {
 
   final user = FirebaseAuth.instance.currentUser;
   final controller = Get.put(HomeController());
+  final signInController = Get.put(SignInController());
+  TextEditingController nameController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -74,6 +77,7 @@ class _AccountSettingState extends State<AccountSetting> {
                             return UserDataColumn();
                           }
                           var userData = snapshot.data!.data() as Map<String, dynamic>?;
+
                           if(userData == null || userData.isEmpty){
                             return UserDataColumn();
                           }
@@ -107,6 +111,7 @@ class _AccountSettingState extends State<AccountSetting> {
                         ),
                         SizedBox(height: 10,),
                         TextField(
+                          controller: nameController,
                           decoration: InputDecoration(
                               hintText: 'Enter your full name',
                               hintStyle: TextStyle(color: Colors.grey,fontSize: 13,
@@ -216,21 +221,29 @@ class _AccountSettingState extends State<AccountSetting> {
             ),
             Align(
               alignment: Alignment.bottomCenter,
-                child: GestureDetector(
-                  onTap: (){},
-                  child: Padding(
-                    padding: const EdgeInsets.only(bottom: 30),
-                    child: Container(
-                      height: h * .05,
-                      width: w * .9,
-                      decoration: BoxDecoration(
-                        color: AppColors.primaryColor,
-                        borderRadius: BorderRadius.circular(8),
+                child: Padding(
+                  padding: const EdgeInsets.only(bottom: 30),
+                  child: Obx((){
+                    return signInController.isLoading.value ?
+                    CircularProgressIndicator(
+                      color: AppColors.primaryColor,
+                    ) :
+                    GestureDetector(
+                      onTap: ()  {
+                        signInController.updateName(nameController.text);
+                      },
+                      child: Container(
+                        height: h * .05,
+                        width: w * .9,
+                        decoration: BoxDecoration(
+                          color: AppColors.primaryColor,
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        child: Center(child: Text('Save Changes',style: TextStyle(color: Colors.white,
+                            fontSize: 14,fontWeight: FontWeight.w600),),),
                       ),
-                      child: Center(child: Text('Save Changes',style: TextStyle(color: Colors.white,
-                          fontSize: 14,fontWeight: FontWeight.w600),),),
-                    ),
-                  ),
+                    );
+                  })
                 )
             )
           ],

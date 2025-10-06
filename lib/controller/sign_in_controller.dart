@@ -9,6 +9,8 @@ class SignInController extends GetxController{
 
   FirebaseAuth auth = FirebaseAuth.instance;
   RxBool isLoading = false.obs;
+  final user = FirebaseAuth.instance.currentUser;
+
 
   Future<void> googleSignIn() async {
     isLoading.value = true;
@@ -45,7 +47,7 @@ class SignInController extends GetxController{
           'name' : user.displayName,
           'photoUrl' : user.photoURL,
           'createAt' : DateTime.now(),
-        }); SetOptions(merge: true);
+        },SetOptions(merge: true));
       }
       isLoading.value = false;
       Get.snackbar(
@@ -75,4 +77,53 @@ class SignInController extends GetxController{
     }
   }
 
+  Future<void> updateName(String newName) async {
+
+    if(newName.trim().isEmpty || user == null){
+      Get.snackbar(
+        'Error',
+        'Name can not be empty',
+        colorText: Colors.white,
+        backgroundColor: Colors.red,
+        animationDuration: Duration(milliseconds: 300),
+        duration: Duration(seconds: 2),
+        borderRadius: 8,
+        borderWidth: 2,
+      );
+      return;
+    }
+
+    isLoading.value = true;
+
+    try{
+
+      await FirebaseFirestore.instance.collection('users').doc(user!.uid).update({
+        'name' : newName.trim(),
+      });
+      isLoading.value = false;
+      Get.snackbar(
+        'Congratulation',
+        'You have Successfully updated the Name',
+        colorText: Colors.white,
+        backgroundColor: Colors.green,
+        animationDuration: Duration(milliseconds: 300),
+        duration: Duration(seconds: 2),
+        borderRadius: 8,
+        borderWidth: 2,
+      );
+    } catch(e){
+      isLoading.value = false;
+      Get.snackbar(
+        'Error',
+        e.toString(),
+        colorText: Colors.white,
+        backgroundColor: Colors.red,
+        animationDuration: Duration(milliseconds: 300),
+        duration: Duration(seconds: 2),
+        borderRadius: 8,
+        borderWidth: 2,
+      );
+    }
+
+  }
 }

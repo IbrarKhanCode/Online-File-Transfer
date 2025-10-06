@@ -52,7 +52,7 @@ class _ShareScreenState extends State<ShareScreen> {
                             ),
                           ),
                           SizedBox(width: 10,),
-                          Text('Online File Transfer',style: TextStyle(color: Colors.black,fontWeight: FontWeight.w600,fontSize: 16),),
+                          Text('Shared Files',style: TextStyle(color: Colors.black,fontWeight: FontWeight.w600,fontSize: 16),),
                           Spacer(),
                           Container(
                             height: h * .05,

@@ -52,7 +52,7 @@ class _FavouriteScreenState extends State<FavouriteScreen> {
                             ),
                           ),
                           SizedBox(width: 10,),
-                          Text('Online File Transfer',style: TextStyle(color: Colors.black,fontWeight: FontWeight.w600,fontSize: 16),),
+                          Text('Favorite',style: TextStyle(color: Colors.black,fontWeight: FontWeight.w600,fontSize: 16),),
                           Spacer(),
                           Container(
                             height: h * .05,

@@ -12,13 +12,8 @@ class HomeController extends GetxController {
   var selectedIndex = 0.obs;
   var filteredFiles = <PlatformFile>[].obs;
   var platformFiles = <PlatformFile>[].obs;
-  TextEditingController nameController = TextEditingController();
 
-  void uploadName(String text){
 
-    nameController.text = text;
-
-  }
 
   void toggleView(){
     isListView.value = !isListView.value;

@@ -26,208 +26,215 @@ class _AccountSettingState extends State<AccountSetting> {
 
     return Scaffold(
       backgroundColor: Colors.white,
-      body: SingleChildScrollView(
-        child: SafeArea(
-          child: Column(
-            children: [
-              Container(
-                height: h * .07,
-                width: w,
-                decoration: BoxDecoration(
-                  color: Colors.grey.shade100,
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 5),
-                  child: Column(
-                    children: [
-                      SizedBox(height: h * .01,),
-                      Row(
+      body: SafeArea(
+        child: Stack(
+          children: [
+            SingleChildScrollView(
+              child: Column(
+                children: [
+                  Container(
+                    height: h * .07,
+                    width: w,
+                    decoration: BoxDecoration(
+                      color: Colors.grey.shade100,
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 5),
+                      child: Column(
                         children: [
-                          IconButton(
-                              onPressed: (){
-                                Get.back();
-                              },
-                              icon: Icon(Icons.arrow_back)),
-                          Text('Account Settings',style: TextStyle(color: Colors.black,fontWeight: FontWeight.w600,fontSize: 16),),
+                          SizedBox(height: h * .01,),
+                          Row(
+                            children: [
+                              IconButton(
+                                  onPressed: (){
+                                    Get.back();
+                                  },
+                                  icon: Icon(Icons.arrow_back)),
+                              Text('Account Settings',style: TextStyle(color: Colors.black,fontWeight: FontWeight.w600,fontSize: 16),),
+                            ],
+                          ),
                         ],
                       ),
-                    ],
+                    ),
                   ),
-                ),
-              ),
-              SizedBox(height: 20,),
-              if(user == null)...[
-                UserDataColumn(),
-              ]
-              else ...[
-                StreamBuilder<DocumentSnapshot>(
-                    stream: FirebaseFirestore.instance.collection('users').doc(user!.uid).snapshots(),
-                    builder: (context,snapshot){
-                      if (snapshot.connectionState == ConnectionState.waiting) {
-                        return Center(child: CircularProgressIndicator(
-                          color: AppColors.primaryColor,
-                        ));
-                      }
-                      if(!snapshot.hasData || !snapshot.data!.exists){
-                        return UserDataColumn();
-                      }
-                      var userData = snapshot.data!.data() as Map<String, dynamic>?;
-                      if(userData == null || userData.isEmpty){
-                        return UserDataColumn();
-                      }
-                      return Column(
-                        children: [
-                          CircleAvatar(
-                            backgroundImage: userData['photoUrl'] != null ?
-                            NetworkImage(userData['photoUrl']) : AssetImage('assets/images/profileTwo.png'),
-                            radius: 40,
-                          ),
-                          SizedBox(height: 10,),
-                          Text(userData['name'] ?? 'Name : User has not signup',style: TextStyle(color: Colors.black,fontWeight: FontWeight.w600,fontSize: 14),),
-                          Text(userData['email'] ?? 'Gmail : User has not signup',
-                            style: TextStyle(color: Colors.grey,
-                                fontWeight: FontWeight.w500,fontSize: 12),),
-                        ],
-                      );
-                    }),
-              ],
-              SizedBox(height: 30,),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 20),
-                child: Column(
-                  children: [
-                    Row(
-                      children: [
-                        Text('Full Name',style: TextStyle(color: Color(0xff666666),
-                            fontWeight: FontWeight.w600,fontSize: 13),),
-          
-                      ],
-                    ),
-                    SizedBox(height: 10,),
-                    TextField(
-                      controller: controller.nameController,
-                      decoration: InputDecoration(
-                        hintText: 'Enter your full name',
-                        hintStyle: TextStyle(color: Colors.grey,fontSize: 13,
-                            fontWeight: FontWeight.w500),
-                        enabledBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10),
-                          borderSide: BorderSide(color: Colors.grey.shade100)
-                        ),
-                          focusedBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(10),
-                              borderSide: BorderSide(color: AppColors.primaryColor)
-                          )
-                      ),
-                    ),
-                    SizedBox(height: 10,),
-                    Row(
-                      children: [
-                        Text('Language',style: TextStyle(color: Color(0xff666666),
-                            fontWeight: FontWeight.w600,fontSize: 13),),
-          
-                      ],
-                    ),
-                    SizedBox(height: 10,),
-                    TextField(
-                      decoration: InputDecoration(
-                          hintText: 'Select Language',
-                          hintStyle: TextStyle(color: Colors.grey,fontSize: 13,
-                              fontWeight: FontWeight.w500),
-                          enabledBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(10),
-                              borderSide: BorderSide(color: Colors.grey.shade100)
-                          ),
-                          focusedBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(10),
-                              borderSide: BorderSide(color: AppColors.primaryColor)
-                          ),
-                      ),
-                    ),
-                    SizedBox(height: 20,),
-                    Container(
-                      height: h * .06,
-                      width: w,
-                      decoration: BoxDecoration(
-                        color: Color(0xffF8F8F8),
-                        borderRadius: BorderRadius.circular(10)
-                      ),
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 10),
-                        child: Row(
-                          children: [
-                            Text('Account ID',style: TextStyle(color: Colors.grey,
-                                fontWeight: FontWeight.w500,fontSize: 13),),
-                            Spacer(),
-                            Text('000000000',style: TextStyle(color: AppColors.primaryColor,
-                                fontWeight: FontWeight.w500,fontSize: 13),),
-                          ],
-                        ),
-                      ),
-                    ),
-                    SizedBox(height: 10,),
-                    Container(
-                      height: h * .06,
-                      width: w,
-                      decoration: BoxDecoration(
-                          color: Color(0xffF8F8F8),
-                          borderRadius: BorderRadius.circular(10)
-                      ),
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 10),
-                        child: Row(
-                          children: [
-                            Text('Registration Date',style: TextStyle(color: Colors.grey,
-                                fontWeight: FontWeight.w500,fontSize: 13),),
-                            Spacer(),
-                            Text('09-12-2024',style: TextStyle(color: AppColors.primaryColor,
-                                fontWeight: FontWeight.w500,fontSize: 13),),
-                          ],
-                        ),
-                      ),
-                    ),
-                    SizedBox(height: 10,),
-                    Container(
-                      height: h * .06,
-                      width: w,
-                      decoration: BoxDecoration(
-                          color: Color(0xffF8F8F8),
-                          borderRadius: BorderRadius.circular(10)
-                      ),
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 10),
-                        child: Row(
-                          children: [
-                            Text('Last Login',style: TextStyle(color: Colors.grey,
-                                fontWeight: FontWeight.w500,fontSize: 13),),
-                            Spacer(),
-                            Text('17-07-2025',style: TextStyle(color: AppColors.primaryColor,
-                                fontWeight: FontWeight.w500,fontSize: 13),),
-                          ],
-                        ),
-                      ),
-                    ),
-                    SizedBox(height: h * .17,),
-                    GestureDetector(
-                      onTap: (){},
-                      child: Container(
-                        height: h * .05,
-                        width: w,
-                        decoration: BoxDecoration(
-                          color: AppColors.primaryColor,
-                          borderRadius: BorderRadius.circular(8),
-                        ),
-                        child: Center(child: Text('Save Changes',style: TextStyle(color: Colors.white,
-                            fontSize: 14,fontWeight: FontWeight.w600),),),
-                      ),
-                    )
+                  SizedBox(height: 20,),
+                  if(user == null)...[
+                    UserDataColumn(),
+                  ]
+                  else ...[
+                    StreamBuilder<DocumentSnapshot>(
+                        stream: FirebaseFirestore.instance.collection('users').doc(user!.uid).snapshots(),
+                        builder: (context,snapshot){
+                          if (snapshot.connectionState == ConnectionState.waiting) {
+                            return Center(child: CircularProgressIndicator(
+                              color: AppColors.primaryColor,
+                            ));
+                          }
+                          if(!snapshot.hasData || !snapshot.data!.exists){
+                            return UserDataColumn();
+                          }
+                          var userData = snapshot.data!.data() as Map<String, dynamic>?;
+                          if(userData == null || userData.isEmpty){
+                            return UserDataColumn();
+                          }
+                          return Column(
+                            children: [
+                              CircleAvatar(
+                                backgroundImage: userData['photoUrl'] != null ?
+                                NetworkImage(userData['photoUrl']) : AssetImage('assets/images/profileTwo.png'),
+                                radius: 40,
+                              ),
+                              SizedBox(height: 10,),
+                              Text(userData['name'] ?? 'Name',style: TextStyle(color: Colors.black,fontWeight: FontWeight.w600,fontSize: 14),),
+                              Text(userData['email'] ?? 'Gmail',
+                                style: TextStyle(color: Colors.grey,
+                                    fontWeight: FontWeight.w500,fontSize: 12),),
+                            ],
+                          );
+                        }),
                   ],
-                ),
+                  SizedBox(height: 30,),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 20),
+                    child: Column(
+                      children: [
+                        Row(
+                          children: [
+                            Text('Full Name',style: TextStyle(color: Color(0xff666666),
+                                fontWeight: FontWeight.w600,fontSize: 13),),
+              
+                          ],
+                        ),
+                        SizedBox(height: 10,),
+                        TextField(
+                          decoration: InputDecoration(
+                              hintText: 'Enter your full name',
+                              hintStyle: TextStyle(color: Colors.grey,fontSize: 13,
+                                  fontWeight: FontWeight.w500),
+                              enabledBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(10),
+                                  borderSide: BorderSide(color: Colors.grey.shade100)
+                              ),
+                              focusedBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(10),
+                                  borderSide: BorderSide(color: AppColors.primaryColor)
+                              )
+                          ),
+                        ),
+                        SizedBox(height: 10,),
+                        Row(
+                          children: [
+                            Text('Language',style: TextStyle(color: Color(0xff666666),
+                                fontWeight: FontWeight.w600,fontSize: 13),),
+              
+                          ],
+                        ),
+                        SizedBox(height: 10,),
+                        TextField(
+                          decoration: InputDecoration(
+                            hintText: 'Select Language',
+                            hintStyle: TextStyle(color: Colors.grey,fontSize: 13,
+                                fontWeight: FontWeight.w500),
+                            enabledBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(10),
+                                borderSide: BorderSide(color: Colors.grey.shade100)
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(10),
+                                borderSide: BorderSide(color: AppColors.primaryColor)
+                            ),
+                          ),
+                        ),
+                        SizedBox(height: 20,),
+                        Container(
+                          height: h * .06,
+                          width: w,
+                          decoration: BoxDecoration(
+                              color: Color(0xffF8F8F8),
+                              borderRadius: BorderRadius.circular(10)
+                          ),
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 10),
+                            child: Row(
+                              children: [
+                                Text('Account ID',style: TextStyle(color: Colors.grey,
+                                    fontWeight: FontWeight.w500,fontSize: 13),),
+                                Spacer(),
+                                Text('000000000',style: TextStyle(color: AppColors.primaryColor,
+                                    fontWeight: FontWeight.w500,fontSize: 13),),
+                              ],
+                            ),
+                          ),
+                        ),
+                        SizedBox(height: 10,),
+                        Container(
+                          height: h * .06,
+                          width: w,
+                          decoration: BoxDecoration(
+                              color: Color(0xffF8F8F8),
+                              borderRadius: BorderRadius.circular(10)
+                          ),
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 10),
+                            child: Row(
+                              children: [
+                                Text('Registration Date',style: TextStyle(color: Colors.grey,
+                                    fontWeight: FontWeight.w500,fontSize: 13),),
+                                Spacer(),
+                                Text('09-12-2024',style: TextStyle(color: AppColors.primaryColor,
+                                    fontWeight: FontWeight.w500,fontSize: 13),),
+                              ],
+                            ),
+                          ),
+                        ),
+                        SizedBox(height: 10,),
+                        Container(
+                          height: h * .06,
+                          width: w,
+                          decoration: BoxDecoration(
+                              color: Color(0xffF8F8F8),
+                              borderRadius: BorderRadius.circular(10)
+                          ),
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 10),
+                            child: Row(
+                              children: [
+                                Text('Last Login',style: TextStyle(color: Colors.grey,
+                                    fontWeight: FontWeight.w500,fontSize: 13),),
+                                Spacer(),
+                                Text('17-07-2025',style: TextStyle(color: AppColors.primaryColor,
+                                    fontWeight: FontWeight.w500,fontSize: 13),),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
               ),
-              SizedBox(height: h * .03,),
-            ],
-          ),
-        ),
+            ),
+            Align(
+              alignment: Alignment.bottomCenter,
+                child: GestureDetector(
+                  onTap: (){},
+                  child: Padding(
+                    padding: const EdgeInsets.only(bottom: 30),
+                    child: Container(
+                      height: h * .05,
+                      width: w * .9,
+                      decoration: BoxDecoration(
+                        color: AppColors.primaryColor,
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      child: Center(child: Text('Save Changes',style: TextStyle(color: Colors.white,
+                          fontSize: 14,fontWeight: FontWeight.w600),),),
+                    ),
+                  ),
+                )
+            )
+          ],
+        )
       ),
     );
   }

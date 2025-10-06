@@ -54,7 +54,7 @@ class _MyFilesScreenState extends State<MyFilesScreen> {
                             ),
                           ),
                           SizedBox(width: 10,),
-                          Text('Online File Transfer',style: TextStyle(color: Colors.black,fontWeight: FontWeight.w600,fontSize: 16),),
+                          Text('My Files',style: TextStyle(color: Colors.black,fontWeight: FontWeight.w600,fontSize: 16),),
                           Spacer(),
                           Container(
                             height: h * .05,

@@ -9,6 +9,7 @@ class SignInController extends GetxController{
 
   FirebaseAuth auth = FirebaseAuth.instance;
   RxBool isLoading = false.obs;
+  RxBool isLoadingTwo = false.obs;
   final user = FirebaseAuth.instance.currentUser;
 
 

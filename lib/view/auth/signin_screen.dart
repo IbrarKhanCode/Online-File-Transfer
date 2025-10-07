@@ -105,36 +105,47 @@ class _SigninScreenState extends State<SigninScreen> {
             ],
           ),
           SizedBox(height: h * .02,),
-          GestureDetector(
-            onTap: (){
-              Get.offAll(BottomView());
-            },
-            child: Container(
-              height: h * .06,
-              width: w * .9,
-              decoration: BoxDecoration(
+          Obx((){
+            return GestureDetector(
+              onTap: () async {
+                controller.isLoadingTwo.value = true;
+                await Future.delayed(Duration(seconds: 2),(){
+                  Get.offAll(BottomView());
+                });
+                controller.isLoadingTwo.value = false;
+              },
+              child: controller.isLoadingTwo.value ?
+              CircularProgressIndicator(
                 color: AppColors.primaryColor,
-                borderRadius: BorderRadius.circular(10),
-              ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Container(
-                    height: h * .025,
-                    width: w * .05,
-                    decoration: BoxDecoration(
-                        image: DecorationImage(
-                          fit: BoxFit.contain,
-                          image: AssetImage('assets/images/guest.png'),
-                        )
+              )
+                  : Container(
+                height: h * .06,
+                width: w * .9,
+                decoration: BoxDecoration(
+                  color: AppColors.primaryColor,
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Container(
+                      height: h * .025,
+                      width: w * .05,
+                      decoration: BoxDecoration(
+                          image: DecorationImage(
+                            fit: BoxFit.contain,
+                            image: AssetImage('assets/images/guest.png'),
+                          )
+                      ),
                     ),
-                  ),
-                  SizedBox(width: 10,),
-                  Text('Continue As Guest',style: TextStyle(color: Colors.white,fontWeight: FontWeight.w600),)
-                ],
+                    SizedBox(width: 10,),
+                    Text('Continue As Guest',style: TextStyle(color: Colors.white,fontWeight: FontWeight.w600),)
+                  ],
+                ),
               ),
-            ),
-          ),
+            );
+          }),
+
           SizedBox(height: h * .02 ,),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,

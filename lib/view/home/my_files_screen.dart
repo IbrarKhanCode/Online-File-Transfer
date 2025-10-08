@@ -162,7 +162,7 @@ class _MyFilesScreenState extends State<MyFilesScreen> {
                   children: [
                     if(controller.isListView.value && controller.platformFiles.isNotEmpty)
                       SizedBox(
-                        height: h * .715,
+                        height: h * .71,
                         width: w,
                         child: ListView.builder(
                             itemCount: controller.filteredFiles.length,
@@ -225,7 +225,7 @@ class _MyFilesScreenState extends State<MyFilesScreen> {
                                               width : w * .55,
                                               child: Text(file.name,
                                                 overflow: TextOverflow.ellipsis,
-                                                maxLines: 2,
+                                                maxLines: 1,
                                                 style: TextStyle(color: Colors.black,
                                                     fontWeight: FontWeight.w500,
                                                     fontSize: 14),
@@ -253,7 +253,7 @@ class _MyFilesScreenState extends State<MyFilesScreen> {
         
                     if(!controller.isListView.value && controller.platformFiles.isNotEmpty)
                       SizedBox(
-                        height: h * .72,
+                        height: h * .715,
                         width: w,
                         child: GridView.builder(
                           padding: EdgeInsets.only(top: 10),

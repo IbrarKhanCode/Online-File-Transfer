@@ -159,7 +159,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   children: [
                     if(controller.isListView.value && controller.files.isNotEmpty)
                       SizedBox(
-                        height: h * .715,
+                        height: h * .71,
                         width: w,
                         child: ListView.builder(
                           itemCount: controller.fileName.length,
@@ -193,10 +193,9 @@ class _HomeScreenState extends State<HomeScreen> {
                                           children: [
                                           SizedBox(
                                             width : w * .55,
-
                                             child: Text(
                                               overflow: TextOverflow.ellipsis,
-                                              maxLines: 2,
+                                              maxLines: 1,
                                               controller.fileName[index],
                                             style: TextStyle(color: Colors.black,
                                                 fontWeight: FontWeight.w500,
@@ -224,13 +223,15 @@ class _HomeScreenState extends State<HomeScreen> {
 
                     if(!controller.isListView.value && controller.files.isNotEmpty)
                       SizedBox(
-                        height: h * .72,
+                        height: h * .715,
                         width: w,
                         child: GridView.builder(
                           itemCount: controller.fileName.length,
                             gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                                crossAxisCount: 3,
-                              childAspectRatio: 0.6,
+                              crossAxisCount: 3,
+                              mainAxisSpacing: 0,
+                              crossAxisSpacing: 0,
+                              mainAxisExtent: 170,
                             ),
                             itemBuilder: (context,index){
                              return Column(
@@ -249,11 +250,11 @@ class _HomeScreenState extends State<HomeScreen> {
                                  Padding(
                                    padding: const EdgeInsets.symmetric(horizontal: 15),
                                    child: SizedBox(
-                                     height : h * .05,
+                                     height : h * .025,
                                      child: Text(
                                        textAlign: TextAlign.center,
                                        overflow: TextOverflow.ellipsis,
-                                       maxLines: 2,
+                                       maxLines: 1,
                                        controller.fileName[index],
                                        style: TextStyle(color: Colors.black,
                                            fontSize: 14,

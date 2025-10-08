@@ -29,7 +29,6 @@ final List<Widget> screens = [
   Widget build(BuildContext context) {
 
     double h = MediaQuery.of(context).size.height;
-    double w = MediaQuery.of(context).size.width;
 
     return Obx((){
       return Scaffold(
@@ -39,11 +38,17 @@ final List<Widget> screens = [
             children: [
               Container(
                 color: Colors.white,
-                child: Divider(
-                  color: Colors.grey.shade300,
-                  thickness: 1,
-                  height: 1,
-                ),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Divider(
+                      color: Colors.grey.shade300,
+                      thickness: 1,
+                      height: 1,
+                    ),
+                    SizedBox(height: 5,),
+                  ],
+                )
               ),
               Container(
                 height: h * .08,

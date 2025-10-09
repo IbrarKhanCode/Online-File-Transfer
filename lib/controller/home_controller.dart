@@ -11,8 +11,6 @@ class HomeController extends GetxController {
   var filteredFiles = <PlatformFile>[].obs;
   var platformFiles = <PlatformFile>[].obs;
 
-
-
   void toggleView(){
     isListView.value = !isListView.value;
   }
@@ -38,7 +36,8 @@ class HomeController extends GetxController {
     }
     else{
       filteredFiles.assignAll(
-       platformFiles.where((file) => file.name.toLowerCase().contains(query.toLowerCase())).toList()
+       platformFiles.where((file) => file.name.toLowerCase().contains
+         (query.toLowerCase())).toList()
       );
     }
   }

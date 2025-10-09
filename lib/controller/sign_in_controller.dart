@@ -61,7 +61,7 @@ class SignInController extends GetxController{
         borderRadius: 8,
         borderWidth: 2,
       );
-      Get.offAll(BottomView());
+      Get.offAll(() => BottomView());
 
     } catch (e) {
       isLoading.value = false;

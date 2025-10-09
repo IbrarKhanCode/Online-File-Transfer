@@ -88,7 +88,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           SizedBox(width: 10,),
                           GestureDetector(
                             onTap: (){
-                              Get.to(SettingScreen());
+                              Get.to(() => SettingScreen());
                             },
                             child: Container(
                               height: h * .052,

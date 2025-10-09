@@ -14,14 +14,13 @@ class SplashController extends GetxController{
 
   void startProgress() async {
 
-   for(int i = 1; i<= totalSteps; i++){
+    for(int i = 1; i<= totalSteps; i++){
      await Future.delayed(Duration(seconds: 1),(){
        currentSteps.value = i;
-       if(i == totalSteps){
-         Get.offAll(SigninScreen());
-       }
      }
      );
    }
+    Get.offAll(() => SigninScreen());
   }
+
 }

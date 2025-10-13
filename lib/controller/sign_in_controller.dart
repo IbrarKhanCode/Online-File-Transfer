@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:online_file_transfer/view/auth/signin_screen.dart';
 import 'package:online_file_transfer/view/home/bottom_view.dart';
 
 class SignInController extends GetxController{
@@ -65,6 +66,40 @@ class SignInController extends GetxController{
 
     } catch (e) {
       isLoading.value = false;
+      Get.snackbar(
+        'Error',
+        e.toString(),
+        colorText: Colors.white,
+        backgroundColor: Colors.red,
+        animationDuration: Duration(milliseconds: 300),
+        duration: Duration(seconds: 2),
+        borderRadius: 8,
+        borderWidth: 2,
+      );
+    }
+  }
+
+  Future<void> signOutUser() async {
+    try {
+
+      await FirebaseAuth.instance.signOut();
+
+      final GoogleSignIn googleSignIn = GoogleSignIn();
+      await googleSignIn.signOut();
+      await googleSignIn.disconnect();
+
+      Get.snackbar(
+        'Congratulation',
+        'You have Successfully signOut the Google Account',
+        colorText: Colors.white,
+        backgroundColor: Colors.green,
+        animationDuration: Duration(milliseconds: 300),
+        duration: Duration(seconds: 2),
+        borderRadius: 8,
+        borderWidth: 2,
+      );
+      Get.offAll(() => SigninScreen());
+    } catch (e) {
       Get.snackbar(
         'Error',
         e.toString(),

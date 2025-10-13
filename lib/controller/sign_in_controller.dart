@@ -78,6 +78,8 @@ class SignInController extends GetxController{
     }
   }
 
+
+
   Future<void> updateName(String newName) async {
 
     if(newName.trim().isEmpty || user == null){

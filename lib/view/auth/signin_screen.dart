@@ -33,7 +33,7 @@ class _SigninScreenState extends State<SigninScreen> {
               decoration: BoxDecoration(
                 image: DecorationImage(
                   fit: BoxFit.cover,
-                    image: AssetImage('assets/images/sign_in.png'))
+                    image: AssetImage('assets/images/sign_in.png')),
               ),
             ),
           ),

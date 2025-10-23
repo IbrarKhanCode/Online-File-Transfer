@@ -11,6 +11,7 @@ class SignInController extends GetxController{
   FirebaseAuth auth = FirebaseAuth.instance;
   RxBool isLoading = false.obs;
   RxBool isLoadingTwo = false.obs;
+  RxBool isLoadingThree = false.obs;
   final user = FirebaseAuth.instance.currentUser;
 
 
@@ -80,14 +81,34 @@ class SignInController extends GetxController{
   }
 
   Future<void> signOutUser() async {
+    isLoadingThree.value = true;
     try {
 
-      await FirebaseAuth.instance.signOut();
-
+      final FirebaseAuth auth = FirebaseAuth.instance;
       final GoogleSignIn googleSignIn = GoogleSignIn();
-      await googleSignIn.signOut();
-      await googleSignIn.disconnect();
 
+      final bool isGoogleSignIn = await googleSignIn.isSignedIn();
+      final bool isFirebaseUserSignedIn = auth.currentUser != null;
+
+      if(!isFirebaseUserSignedIn && !isGoogleSignIn){
+        isLoadingThree.value = false;
+        Get.snackbar(
+          'Notice',
+          'You have already Logged out',
+          colorText: Colors.white,
+          backgroundColor: Colors.red,
+          animationDuration: Duration(milliseconds: 300),
+          duration: Duration(seconds: 2),
+          borderRadius: 8,
+          borderWidth: 2,
+        );
+        return;
+      }
+      await auth.signOut();
+      if(isGoogleSignIn){
+        await googleSignIn.signOut();
+      }
+      isLoadingThree.value = false;
       Get.snackbar(
         'Congratulation',
         'You have Successfully signOut the Google Account',
@@ -100,6 +121,7 @@ class SignInController extends GetxController{
       );
       Get.offAll(() => SigninScreen());
     } catch (e) {
+      isLoadingThree.value = false;
       Get.snackbar(
         'Error',
         e.toString(),
@@ -130,11 +152,8 @@ class SignInController extends GetxController{
       );
       return;
     }
-
     isLoading.value = true;
-
     try{
-
       await FirebaseFirestore.instance.collection('users').doc(user!.uid).update({
         'name' : newName.trim(),
       });

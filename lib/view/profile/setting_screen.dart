@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:online_file_transfer/controller/sign_in_controller.dart';
 import 'package:online_file_transfer/core/utilis/app_colors.dart';
 import 'package:online_file_transfer/core/widget/user_data_column.dart';
 import 'package:online_file_transfer/view/profile/account_setting.dart';
@@ -16,6 +17,7 @@ class SettingScreen extends StatefulWidget {
 class _SettingScreenState extends State<SettingScreen> {
 
   final user = FirebaseAuth.instance.currentUser;
+  final controller = Get.put(SignInController());
 
   @override
   Widget build(BuildContext context) {
@@ -114,7 +116,7 @@ class _SettingScreenState extends State<SettingScreen> {
                         decoration: BoxDecoration(
                           image: DecorationImage(
                             fit: BoxFit.contain,
-                              image: AssetImage('assets/images/account.png'))
+                              image: AssetImage('assets/images/account.png')),
                         ),
                       ),
                       SizedBox(width: 15,),
@@ -202,30 +204,142 @@ class _SettingScreenState extends State<SettingScreen> {
               ),
             ),
             SizedBox(height: 10,),
-            Container(
-              height: h * .07,
-              width: w * .9,
-              decoration: BoxDecoration(
-                  color: Colors.white,
-                  border: Border.all(color: Colors.grey.shade100,),
-                  borderRadius: BorderRadius.circular(15)
-              ),
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 10),
-                child: Row(
-                  children: [
-                    Container(
-                      height: h * .035,
-                      width: w * .08,
-                      decoration: BoxDecoration(
-                          image: DecorationImage(
-                              fit: BoxFit.contain,
-                              image: AssetImage('assets/images/logout.png'))
-                      ),
+            GestureDetector(
+              onTap: (){
+                showModalBottomSheet(
+                    backgroundColor: Colors.white,
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
                     ),
-                    SizedBox(width: 15,),
-                    Text('Logout',style: TextStyle(color: Colors.red,fontSize: 14,fontWeight: FontWeight.w600),),
-                  ],
+                    context: context,
+                    builder: (context){
+                      return SizedBox(
+                        height: MediaQuery.of(context).size.height * .37,
+                        width: MediaQuery.of(context).size.width,
+                        child: Column(
+                          children: [
+                            SizedBox(height: 20,),
+                            Stack(
+                              children: [
+                                Align(
+                                  alignment: Alignment.topRight,
+                                  child: Padding(
+                                    padding: const EdgeInsets.only(right: 15,),
+                                    child: GestureDetector(
+                                      onTap: (){
+                                        Get.back();
+                                      },
+                                      child: Container(
+                                        height: h * .03,
+                                        width: w * .08,
+                                        decoration: BoxDecoration(
+                                          color: Colors.grey.shade100,
+                                          shape: BoxShape.circle,
+                                        ),
+                                        child: Center(
+                                          child: Icon(Icons.close,color: Colors.black,size: 20,),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                Align(
+                                  alignment: Alignment.topCenter,
+                                  child: Container(
+                                    height: h * .085,
+                                    width: w * .2,
+                                    decoration: BoxDecoration(
+                                      color: Color(0xffFD3C3C),
+                                      shape: BoxShape.circle,
+                                    ),
+                                    child: Center(child: Image.asset(
+                                        height: h * .05,
+                                        width: w * .12,
+                                        'assets/images/big_logout.png'),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                            SizedBox(height: 15,),
+                            Text('Logout',style: TextStyle(color: Colors.black,
+                                fontWeight: FontWeight.w700,fontSize: 20,),),
+                            SizedBox(height: 5,),
+                            Text(
+                              textAlign: TextAlign.center,
+                              'Are you sure that you want\n'
+                                'to Logout ?',style: TextStyle(color: Colors.black,fontSize: 14,fontWeight: FontWeight.w500),),
+                            SizedBox(height: 20,),
+                            Obx((){
+                              return GestureDetector(
+                                onTap: (){
+                                  controller.signOutUser();
+                                },
+                                child: controller.isLoadingThree.value ?
+                                CircularProgressIndicator(
+                                  color: AppColors.primaryColor,
+                                )
+                                    : Container(
+                                  height: h * .05,
+                                  width: w * .9,
+                                  decoration: BoxDecoration(
+                                    color: Color(0xffFD3C3C),
+                                    borderRadius: BorderRadius.circular(8),
+                                  ),
+                                  child: Center(child: Text('YES',
+                                    style: TextStyle(color: Colors.white,
+                                      fontSize: 16,fontWeight: FontWeight.w600),),),
+                                ),
+                              );
+                            }),
+                            SizedBox(height: 10,),
+                            GestureDetector(
+                              onTap: (){
+                                Get.back();
+                              },
+                              child: Container(
+                                height: h * .05,
+                                width: w * .9,
+                                decoration: BoxDecoration(
+                                  color: Colors.grey.shade50,
+                                  borderRadius: BorderRadius.circular(8),
+                                ),
+                                child: Center(child: Text('NO',
+                                  style: TextStyle(color: Color(0xffFD3C3C),
+                                    fontSize: 16,fontWeight: FontWeight.w700,),),),
+                              ),
+                            ),
+                          ],
+                        ),
+                      );
+                    }
+                );
+              },
+              child: Container(
+                height: h * .07,
+                width: w * .9,
+                decoration: BoxDecoration(
+                    color: Colors.white,
+                    border: Border.all(color: Colors.grey.shade100,),
+                    borderRadius: BorderRadius.circular(15)
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 10),
+                  child: Row(
+                    children: [
+                      Container(
+                        height: h * .035,
+                        width: w * .08,
+                        decoration: BoxDecoration(
+                            image: DecorationImage(
+                                fit: BoxFit.contain,
+                                image: AssetImage('assets/images/logout.png')),
+                        ),
+                      ),
+                      SizedBox(width: 15,),
+                      Text('Logout',style: TextStyle(color: Colors.red,fontSize: 14,fontWeight: FontWeight.w600),),
+                    ],
+                  ),
                 ),
               ),
             ),

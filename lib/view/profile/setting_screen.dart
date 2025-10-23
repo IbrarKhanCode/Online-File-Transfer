@@ -96,7 +96,7 @@ class _SettingScreenState extends State<SettingScreen> {
             SizedBox(height: 20,),
             GestureDetector(
               onTap: (){
-                Get.to(() => AccountSetting());
+                Get.toNamed('/accountSetting');
               },
               child: Container(
                 height: h * .07,

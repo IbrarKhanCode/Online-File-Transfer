@@ -1,8 +1,9 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:online_file_transfer/controller/home_controller.dart';
 import 'package:online_file_transfer/core/utilis/app_colors.dart';
-import 'package:online_file_transfer/view/profile/setting_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -14,6 +15,7 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
 
   final controller = Get.put(HomeController());
+  final user = FirebaseAuth.instance.currentUser;
 
   @override
   Widget build(BuildContext context) {
@@ -86,19 +88,76 @@ class _HomeScreenState extends State<HomeScreen> {
                             ),
                           ),
                           SizedBox(width: 10,),
-                          GestureDetector(
-                            onTap: (){
-                              Get.to(() => SettingScreen());
-                            },
-                            child: Container(
-                              height: h * .052,
-                              width: w * .12,
-                              decoration: BoxDecoration(
-                                image: DecorationImage(image: AssetImage('assets/images/profile.png')),
-                                shape: BoxShape.circle,
+                          if(user == null)...[
+                            GestureDetector(
+                              onTap: (){
+                                Get.toNamed('/settingScreen');
+                              },
+                              child: Container(
+                                height: h * .052,
+                                width: w * .12,
+                                decoration: BoxDecoration(
+                                  image: DecorationImage(image: AssetImage('assets/images/profile.png')),
+                                  shape: BoxShape.circle,
+                                ),
                               ),
                             ),
-                          ),
+                          ]
+                          else...[
+                            StreamBuilder<DocumentSnapshot>(
+                                stream: FirebaseFirestore.instance.collection('users').doc(user!.uid).snapshots(),
+                                builder: (context, snapshot){
+                                  if(snapshot.connectionState == ConnectionState.waiting){
+                                    return Center(
+                                      child: CircularProgressIndicator(
+                                        color: AppColors.primaryColor,
+                                      ),
+                                    );
+                                  }
+                                  if(!snapshot.hasData || !snapshot.data!.exists){
+                                    return GestureDetector(
+                                      onTap: (){
+                                        Get.toNamed('/settingScreen');
+                                      },
+                                      child: Container(
+                                        height: h * .052,
+                                        width: w * .12,
+                                        decoration: BoxDecoration(
+                                          image: DecorationImage(image: AssetImage('assets/images/profile.png')),
+                                          shape: BoxShape.circle,
+                                        ),
+                                      ),
+                                    );
+                                  }
+                                  var data = snapshot.data!.data() as Map<String, dynamic>?;
+                                  if(data == null || data.isEmpty){
+                                    return GestureDetector(
+                                      onTap: (){
+                                        Get.toNamed('/settingScreen');
+                                      },
+                                      child: Container(
+                                        height: h * .052,
+                                        width: w * .12,
+                                        decoration: BoxDecoration(
+                                          image: DecorationImage(image: AssetImage('assets/images/profile.png')),
+                                          shape: BoxShape.circle,
+                                        ),
+                                      ),
+                                    );
+                                  }
+                                  return GestureDetector(
+                                    onTap: (){
+                                      Get.toNamed('/settingScreen');
+                                    },
+                                    child: CircleAvatar(
+                                      backgroundImage: data['photoUrl'] != null ?
+                                      NetworkImage(data['photoUrl']) : AssetImage('assets/images/profileTwo.png'),
+                                      radius: 20,
+                                    ),
+                                  );
+                                }
+                            )
+                          ]
                         ],
                       ),
                     ],

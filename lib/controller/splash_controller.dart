@@ -2,8 +2,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:get/get.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:online_file_transfer/view/auth/signin_screen.dart';
-import 'package:online_file_transfer/view/home/bottom_view.dart';
 
 class SplashController extends GetxController{
 
@@ -54,17 +52,15 @@ class SplashController extends GetxController{
     }
 
     if (user == null) {
-      Get.offAll(() => SigninScreen());
+      Get.offAllNamed('/SignInScreen');
     } else {
       bool exists = await checkIfUserStillExists(user);
       if (!exists) {
         await signOutUser();
-        Get.offAll(() => SigninScreen());
+       Get.offAllNamed('/SignInScreen');
       } else {
-        Get.offAll(() => BottomView());
+        Get.offAllNamed('/bottomViewScreen');
       }
     }
   }
-
-
 }

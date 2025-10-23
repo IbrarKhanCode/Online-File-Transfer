@@ -110,7 +110,7 @@ class _SigninScreenState extends State<SigninScreen> {
               onTap: () async {
                 controller.isLoadingTwo.value = true;
                 await Future.delayed(Duration(seconds: 2),(){
-                  Get.offAll(() => BottomView());
+                  Get.offAllNamed('/bottomViewScreen');
                 });
                 controller.isLoadingTwo.value = false;
               },

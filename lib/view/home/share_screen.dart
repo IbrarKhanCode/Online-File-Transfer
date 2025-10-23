@@ -87,7 +87,7 @@ class _ShareScreenState extends State<ShareScreen> {
                           SizedBox(width: 10,),
                           GestureDetector(
                             onTap: (){
-                              Get.to(() => SettingScreen());
+                              Get.toNamed('/settingScreen');
                             },
                             child: Container(
                               height: h * .052,

@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:online_file_transfer/controller/home_controller.dart';
 import 'package:online_file_transfer/core/utilis/app_colors.dart';
 import 'package:online_file_transfer/core/widget/custom_container.dart';
+import 'package:online_file_transfer/main.dart';
 import 'package:online_file_transfer/view/profile/setting_screen.dart';
 
 class MyFilesScreen extends StatefulWidget {
@@ -30,6 +31,7 @@ class _MyFilesScreenState extends State<MyFilesScreen> {
         child: SafeArea(
           child: Column(
             children: [
+
               Container(
                 height: h * .09,
                 width: w,
@@ -89,7 +91,7 @@ class _MyFilesScreenState extends State<MyFilesScreen> {
                           SizedBox(width: 10,),
                           GestureDetector(
                             onTap: (){
-                              Get.to(() => SettingScreen());
+                              Get.toNamed('/settingScreen');
                             },
                             child: Container(
                               height: h * .052,

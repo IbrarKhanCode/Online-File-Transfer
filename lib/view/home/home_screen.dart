@@ -93,13 +93,9 @@ class _HomeScreenState extends State<HomeScreen> {
                               onTap: (){
                                 Get.toNamed('/settingScreen');
                               },
-                              child: Container(
-                                height: h * .052,
-                                width: w * .12,
-                                decoration: BoxDecoration(
-                                  image: DecorationImage(image: AssetImage('assets/images/profile.png')),
-                                  shape: BoxShape.circle,
-                                ),
+                              child: CircleAvatar(
+                                backgroundImage: AssetImage('assets/images/profileTwo.png'),
+                                radius: 26,
                               ),
                             ),
                           ]
@@ -119,13 +115,9 @@ class _HomeScreenState extends State<HomeScreen> {
                                       onTap: (){
                                         Get.toNamed('/settingScreen');
                                       },
-                                      child: Container(
-                                        height: h * .052,
-                                        width: w * .12,
-                                        decoration: BoxDecoration(
-                                          image: DecorationImage(image: AssetImage('assets/images/profile.png')),
-                                          shape: BoxShape.circle,
-                                        ),
+                                      child: CircleAvatar(
+                                        backgroundImage: AssetImage('assets/images/profileTwo.png'),
+                                        radius: 26,
                                       ),
                                     );
                                   }
@@ -135,13 +127,9 @@ class _HomeScreenState extends State<HomeScreen> {
                                       onTap: (){
                                         Get.toNamed('/settingScreen');
                                       },
-                                      child: Container(
-                                        height: h * .052,
-                                        width: w * .12,
-                                        decoration: BoxDecoration(
-                                          image: DecorationImage(image: AssetImage('assets/images/profile.png')),
-                                          shape: BoxShape.circle,
-                                        ),
+                                      child: CircleAvatar(
+                                        backgroundImage: AssetImage('assets/images/profileTwo.png'),
+                                        radius: 26,
                                       ),
                                     );
                                   }
@@ -152,7 +140,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                     child: CircleAvatar(
                                       backgroundImage: data['photoUrl'] != null ?
                                       NetworkImage(data['photoUrl']) : AssetImage('assets/images/profileTwo.png'),
-                                      radius: 20,
+                                      radius: 26,
                                     ),
                                   );
                                 }

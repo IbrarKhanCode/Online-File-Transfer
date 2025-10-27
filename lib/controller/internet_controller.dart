@@ -12,14 +12,16 @@ class InternetController extends GetxController{
   @override
   void onInit() {
     super.onInit();
-    _checkConnection();
     _listenConnectionChanges();
+    WidgetsBinding.instance.addPostFrameCallback((_){
+      _checkConnection();
+    });
   }
 
   Future<void> _checkConnection() async {
     final result = await Connectivity().checkConnectivity();
     isConnected.value = result != ConnectivityResult.none;
-    if(!isConnected.value){
+    if(!isConnected.value && Get.context != null){
       _showInternetSheet(Get.context!);
     }
   }
@@ -42,7 +44,10 @@ class InternetController extends GetxController{
     });
   }
 
-  void _showInternetSheet(BuildContext context){
+  void _showInternetSheet(BuildContext? context){
+    final ctx = context ?? Get.overlayContext;
+    if(ctx == null) return;
+
     showModalBottomSheet(
         backgroundColor: Colors.white,
         isDismissible: false,
@@ -50,11 +55,11 @@ class InternetController extends GetxController{
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
         ),
-        context: context,
-        builder: (context){
+        context: ctx,
+        builder: (_){
           return SizedBox(
-            height: MediaQuery.of(context).size.height * .3,
-            width: MediaQuery.of(context).size.width,
+            height: MediaQuery.of(ctx).size.height * .3,
+            width: MediaQuery.of(ctx).size.width,
             child: Column(
               children: [
                 SizedBox(height: 20,),
@@ -69,8 +74,8 @@ class InternetController extends GetxController{
                             Get.back();
                           },
                           child: Container(
-                            height: MediaQuery.of(context).size.height * .03,
-                            width: MediaQuery.of(context).size.width * .08,
+                            height: MediaQuery.of(ctx).size.height * .03,
+                            width: MediaQuery.of(ctx).size.width * .08,
                             decoration: BoxDecoration(
                               color: Colors.grey.shade100,
                               shape: BoxShape.circle,
@@ -85,15 +90,15 @@ class InternetController extends GetxController{
                     Align(
                       alignment: Alignment.topCenter,
                       child: Container(
-                        height: MediaQuery.of(context).size.height* .085,
-                        width: MediaQuery.of(context).size.width * .2,
+                        height: MediaQuery.of(ctx).size.height* .085,
+                        width: MediaQuery.of(ctx).size.width * .2,
                         decoration: BoxDecoration(
                           color: AppColors.primaryColor,
                           shape: BoxShape.circle,
                         ),
                         child: Center(child: Image.asset(
-                            height: MediaQuery.of(context).size.height * .05,
-                            width: MediaQuery.of(context).size.width * .12,
+                            height: MediaQuery.of(ctx).size.height * .05,
+                            width: MediaQuery.of(ctx).size.width * .12,
                             'assets/images/internet.png'),
                         ),
                       ),
@@ -113,7 +118,7 @@ class InternetController extends GetxController{
                   onTap: () async {
                     await _checkConnection();
                     if(isConnected.value){
-                      if (Navigator.canPop(context)) Navigator.pop(context);
+                      if (Navigator.canPop(ctx)) Navigator.pop(ctx);
                     } else {
                       Get.snackbar(
                         'Connection Failed',
@@ -128,8 +133,8 @@ class InternetController extends GetxController{
                     }
                   },
                   child: Container(
-                    height: MediaQuery.of(context).size.height * .05,
-                    width: MediaQuery.of(context).size.width * .9,
+                    height: MediaQuery.of(ctx).size.height * .05,
+                    width: MediaQuery.of(ctx).size.width * .9,
                     decoration: BoxDecoration(
                       color: AppColors.primaryColor,
                       borderRadius: BorderRadius.circular(8),

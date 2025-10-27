@@ -5,7 +5,7 @@
 
 
     <application
-        android:label="online_file_transfer"
+        android:label="online file transfer"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity

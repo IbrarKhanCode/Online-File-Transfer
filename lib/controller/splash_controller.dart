@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:get/get.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:online_file_transfer/controller/internet_controller.dart';
 
 class SplashController extends GetxController{
 
@@ -13,6 +14,12 @@ class SplashController extends GetxController{
     super.onInit();
     startProgress();
   }
+
+  void _recheckConnectionAfterNavigation() {
+    final internetController = Get.find<InternetController>();
+    internetController.checkConnection();
+  }
+
 
   Future<bool> checkIfUserStillExists(User user) async {
     try {
@@ -53,13 +60,18 @@ class SplashController extends GetxController{
 
     if (user == null) {
       Get.offAllNamed('/SignInScreen');
+      _recheckConnectionAfterNavigation();
+
     } else {
       bool exists = await checkIfUserStillExists(user);
       if (!exists) {
         await signOutUser();
        Get.offAllNamed('/SignInScreen');
+        _recheckConnectionAfterNavigation();
+
       } else {
         Get.offAllNamed('/bottomViewScreen');
+        _recheckConnectionAfterNavigation();
       }
     }
   }

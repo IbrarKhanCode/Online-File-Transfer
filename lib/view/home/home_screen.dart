@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:online_file_transfer/controller/home_controller.dart';
 import 'package:online_file_transfer/core/utilis/app_colors.dart';
+import 'package:online_file_transfer/core/widget/user_profile.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -44,11 +45,11 @@ class _HomeScreenState extends State<HomeScreen> {
                       Row(
                         children: [
                           Container(
-                            height: h * .033,
-                            width: w * .12,
+                            height: h * .03,
+                            width: w * .1,
                             decoration: BoxDecoration(
                                 image: DecorationImage(
-                                  fit: BoxFit.cover,
+                                  fit: BoxFit.contain,
                                   image: AssetImage('assets/images/logo.png'),
                                 )
                             ),
@@ -58,8 +59,8 @@ class _HomeScreenState extends State<HomeScreen> {
                               fontWeight: FontWeight.w600,fontSize: 16),),
                           Spacer(),
                           Container(
-                            height: h * .05,
-                            width: w * .13,
+                            height: h * .04,
+                            width: w * .1,
                             decoration: BoxDecoration(
                               color: Colors.white,
                               shape: BoxShape.circle,
@@ -70,15 +71,15 @@ class _HomeScreenState extends State<HomeScreen> {
                                   Align(
                                       alignment: Alignment.center,
                                       child: Container(
-                                        height: h * .03,
-                                        width: w * .05,
+                                        height: h * .02,
+                                        width: w * .04,
                                         decoration: BoxDecoration(
                                           image: DecorationImage(image: AssetImage('assets/images/notification.png'))
                                         ),
                                       )),
                                   Positioned(
-                                    left: 29,
-                                    top: 12,
+                                    left: 23,
+                                    top: 10,
                                     child: Badge(
                                       backgroundColor: AppColors.primaryColor,
                                     ),
@@ -89,15 +90,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           ),
                           SizedBox(width: 10,),
                           if(user == null)...[
-                            GestureDetector(
-                              onTap: (){
-                                Get.toNamed('/settingScreen');
-                              },
-                              child: CircleAvatar(
-                                backgroundImage: AssetImage('assets/images/profileTwo.png'),
-                                radius: 26,
-                              ),
-                            ),
+                            UserProfile(),
                           ]
                           else...[
                             StreamBuilder<DocumentSnapshot>(
@@ -111,27 +104,11 @@ class _HomeScreenState extends State<HomeScreen> {
                                     );
                                   }
                                   if(!snapshot.hasData || !snapshot.data!.exists){
-                                    return GestureDetector(
-                                      onTap: (){
-                                        Get.toNamed('/settingScreen');
-                                      },
-                                      child: CircleAvatar(
-                                        backgroundImage: AssetImage('assets/images/profileTwo.png'),
-                                        radius: 26,
-                                      ),
-                                    );
+                                    return UserProfile();
                                   }
                                   var data = snapshot.data!.data() as Map<String, dynamic>?;
                                   if(data == null || data.isEmpty){
-                                    return GestureDetector(
-                                      onTap: (){
-                                        Get.toNamed('/settingScreen');
-                                      },
-                                      child: CircleAvatar(
-                                        backgroundImage: AssetImage('assets/images/profileTwo.png'),
-                                        radius: 26,
-                                      ),
-                                    );
+                                    return UserProfile();
                                   }
                                   return GestureDetector(
                                     onTap: (){

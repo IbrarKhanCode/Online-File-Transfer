@@ -135,7 +135,7 @@ class InternetController extends GetxController{
                       }
                     },
                     child: Container(
-                      height: MediaQuery.of(context).size.height * .05,
+                      height: MediaQuery.of(context).size.height * .055,
                       width: MediaQuery.of(context).size.width * .9,
                       decoration: BoxDecoration(
                         color: AppColors.primaryColor,

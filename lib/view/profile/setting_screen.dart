@@ -280,7 +280,7 @@ class _SettingScreenState extends State<SettingScreen> {
                                   color: AppColors.primaryColor,
                                 )
                                     : Container(
-                                  height: h * .05,
+                                  height: h * .055,
                                   width: w * .9,
                                   decoration: BoxDecoration(
                                     color: Color(0xffFD3C3C),
@@ -298,7 +298,7 @@ class _SettingScreenState extends State<SettingScreen> {
                                 Get.back();
                               },
                               child: Container(
-                                height: h * .05,
+                                height: h * .055,
                                 width: w * .9,
                                 decoration: BoxDecoration(
                                   color: Colors.grey.shade50,

@@ -109,7 +109,7 @@ class SignInController extends GetxController{
       isLoadingThree.value = false;
       Get.snackbar(
         'Congratulation',
-        'You have Successfully signOut the Google Account',
+        'You have Successfully signout the Google Account',
         colorText: Colors.white,
         backgroundColor: Colors.green,
         animationDuration: Duration(milliseconds: 300),

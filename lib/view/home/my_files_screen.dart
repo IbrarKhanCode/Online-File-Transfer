@@ -1,12 +1,13 @@
 import 'dart:io';
-
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:file_picker/file_picker.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:online_file_transfer/controller/home_controller.dart';
 import 'package:online_file_transfer/core/utilis/app_colors.dart';
 import 'package:online_file_transfer/core/widget/custom_container.dart';
-import 'package:online_file_transfer/main.dart';
-import 'package:online_file_transfer/view/profile/setting_screen.dart';
+import 'package:online_file_transfer/core/widget/user_profile.dart';
 
 class MyFilesScreen extends StatefulWidget {
   const MyFilesScreen({super.key});
@@ -18,6 +19,49 @@ class MyFilesScreen extends StatefulWidget {
 class _MyFilesScreenState extends State<MyFilesScreen> {
 
   final controller = Get.put(HomeController());
+  final user = FirebaseAuth.instance.currentUser;
+
+  void openDialog(BuildContext context,HomeController controller,PlatformFile file){
+      showDialog(
+          context: context,
+          builder: (context) {
+            return Dialog(
+              backgroundColor: Colors.white,
+              child: SizedBox(
+                height: MediaQuery.of(context).size.height * 0.3,
+                width: MediaQuery.of(context).size.width,
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(
+                      horizontal: 10.0),
+                  child: Column(
+                    children: [
+                      SizedBox(
+                        height: 20,
+                      ),
+                      TextButton(
+                          onPressed: () async {
+                            Get.back();
+                            await controller.shareFile(file);
+                          },
+                          child: Text(controller.isShared(file) ? 'Reshare'
+                          : 'Share')),
+                      SizedBox(
+                        height: 20,
+                      ),
+                      TextButton(
+                          onPressed: (){
+                            controller.toggleFavourite(file);
+                            Get.back();
+                          },
+                          child: Text(controller.isFavourite(file) ? 'unFavourite'
+                              : 'Favourite'))
+                    ],
+                  ),
+                ),
+              ),
+            );
+          });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -31,9 +75,8 @@ class _MyFilesScreenState extends State<MyFilesScreen> {
         child: SafeArea(
           child: Column(
             children: [
-
               Container(
-                height: h * .09,
+                height: h * .08,
                 width: w,
                 decoration: BoxDecoration(
                   color: Colors.grey.shade100,
@@ -46,11 +89,11 @@ class _MyFilesScreenState extends State<MyFilesScreen> {
                       Row(
                         children: [
                           Container(
-                            height: h * .033,
-                            width: w * .12,
+                            height: h * .03,
+                            width: w * .1,
                             decoration: BoxDecoration(
                                 image: DecorationImage(
-                                  fit: BoxFit.cover,
+                                  fit: BoxFit.contain,
                                   image: AssetImage('assets/images/logo.png'),
                                 )
                             ),
@@ -59,8 +102,8 @@ class _MyFilesScreenState extends State<MyFilesScreen> {
                           Text('My Files',style: TextStyle(color: Colors.black,fontWeight: FontWeight.w600,fontSize: 16),),
                           Spacer(),
                           Container(
-                            height: h * .05,
-                            width: w * .13,
+                            height: h * .04,
+                            width: w * .1,
                             decoration: BoxDecoration(
                               color: Colors.white,
                               shape: BoxShape.circle,
@@ -71,15 +114,15 @@ class _MyFilesScreenState extends State<MyFilesScreen> {
                                   Align(
                                       alignment: Alignment.center,
                                       child: Container(
-                                        height: h * .03,
-                                        width: w * .05,
+                                        height: h * .02,
+                                        width: w * .04,
                                         decoration: BoxDecoration(
                                             image: DecorationImage(image: AssetImage('assets/images/notification.png'))
                                         ),
                                       )),
                                   Positioned(
-                                    left: 29,
-                                    top: 12,
+                                    left: 23,
+                                    top: 10,
                                     child: Badge(
                                       backgroundColor: AppColors.primaryColor,
                                     ),
@@ -89,19 +132,40 @@ class _MyFilesScreenState extends State<MyFilesScreen> {
                             ),
                           ),
                           SizedBox(width: 10,),
-                          GestureDetector(
-                            onTap: (){
-                              Get.toNamed('/settingScreen');
-                            },
-                            child: Container(
-                              height: h * .052,
-                              width: w * .12,
-                              decoration: BoxDecoration(
-                                image: DecorationImage(image: AssetImage('assets/images/profile.png')),
-                                shape: BoxShape.circle,
-                              ),
-                            ),
-                          ),
+                          if(user == null)...[
+                            UserProfile(),
+                          ]
+                          else...[
+                            StreamBuilder<DocumentSnapshot>(
+                                stream: FirebaseFirestore.instance.collection('users').doc(user!.uid).snapshots(),
+                                builder: (context, snapshot){
+                                  if(snapshot.connectionState == ConnectionState.waiting){
+                                    return Center(
+                                      child: CircularProgressIndicator(
+                                        color: AppColors.primaryColor,
+                                      ),
+                                    );
+                                  }
+                                  if(!snapshot.hasData || !snapshot.data!.exists){
+                                    return UserProfile();
+                                  }
+                                  var data = snapshot.data!.data() as Map<String, dynamic>?;
+                                  if(data == null || data.isEmpty){
+                                    return UserProfile();
+                                  }
+                                  return GestureDetector(
+                                    onTap: (){
+                                      Get.toNamed('/settingScreen');
+                                    },
+                                    child: CircleAvatar(
+                                      backgroundImage: data['photoUrl'] != null ?
+                                      NetworkImage(data['photoUrl']) : AssetImage('assets/images/profileTwo.png'),
+                                      radius: 22,
+                                    ),
+                                  );
+                                }
+                            )
+                          ]
                         ],
                       ),
                     ],
@@ -172,6 +236,7 @@ class _MyFilesScreenState extends State<MyFilesScreen> {
                             itemBuilder: (context,index){
                               final file = controller.filteredFiles[index];
                               final extension = file.extension?.toLowerCase() ?? '';
+
                               Widget preview;
                               if(['png','jpg','jpeg'].contains(extension)){
                                 preview = Container(
@@ -303,32 +368,41 @@ class _MyFilesScreenState extends State<MyFilesScreen> {
         
                               return Padding(
                                 padding: const EdgeInsets.symmetric(horizontal: 15),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  children: [
-                                    Container(
-                                      height: h * .12,
-                                        width: w * .28,
-                                        decoration: BoxDecoration(
-                                          color: Colors.grey.shade100,
-                                          borderRadius: BorderRadius.circular(10),
+                                child: GestureDetector(
+                                  onTap: (){
+                                    openDialog(
+                                        context,
+                                        controller,
+                                        file,
+                                    );
+                                  },
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.center,
+                                    children: [
+                                      Container(
+                                        height: h * .12,
+                                          width: w * .28,
+                                          decoration: BoxDecoration(
+                                            color: Colors.grey.shade100,
+                                            borderRadius: BorderRadius.circular(10),
+                                          ),
+                                          child: Center(child: preview)),
+                                      SizedBox(height: 10,),
+                                      SizedBox(
+                                        height : h * .025,
+                                        child: Text(
+                                          textAlign: TextAlign.center,
+                                          overflow: TextOverflow.ellipsis,
+                                          maxLines: 1,
+                                          file.name,
+                                          style: TextStyle(color: Colors.black,
+                                              fontSize: 14,
+                                              fontWeight: FontWeight.w500),
                                         ),
-                                        child: Center(child: preview)),
-                                    SizedBox(height: 10,),
-                                    SizedBox(
-                                      height : h * .025,
-                                      child: Text(
-                                        textAlign: TextAlign.center,
-                                        overflow: TextOverflow.ellipsis,
-                                        maxLines: 1,
-                                        file.name,
-                                        style: TextStyle(color: Colors.black,
-                                            fontSize: 14,
-                                            fontWeight: FontWeight.w500),
                                       ),
-                                    ),
-                                    Text('20-05-2024',style: TextStyle(color: Colors.grey,fontSize: 11,fontWeight: FontWeight.w400),),
-                                  ],
+                                      Text('20-05-2024',style: TextStyle(color: Colors.grey,fontSize: 11,fontWeight: FontWeight.w400),),
+                                    ],
+                                  ),
                                 ),
                               );
                             }),

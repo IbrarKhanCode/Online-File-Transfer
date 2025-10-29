@@ -32,7 +32,7 @@ class _HomeScreenState extends State<HomeScreen> {
           child: Column(
             children: [
               Container(
-                height: h * .09,
+                height: h * .08,
                 width: w,
                 decoration: BoxDecoration(
                   color: Colors.grey.shade100,
@@ -117,7 +117,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                     child: CircleAvatar(
                                       backgroundImage: data['photoUrl'] != null ?
                                       NetworkImage(data['photoUrl']) : AssetImage('assets/images/profileTwo.png'),
-                                      radius: 26,
+                                      radius: 22,
                                     ),
                                   );
                                 }

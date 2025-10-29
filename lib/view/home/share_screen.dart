@@ -1,8 +1,13 @@
+import 'dart:io';
+
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:online_file_transfer/controller/home_controller.dart';
 import 'package:online_file_transfer/core/utilis/app_colors.dart';
-import 'package:online_file_transfer/view/profile/setting_screen.dart';
+import 'package:online_file_transfer/core/widget/custom_container.dart';
+import 'package:online_file_transfer/core/widget/user_profile.dart';
 
 class ShareScreen extends StatefulWidget {
   const ShareScreen({super.key});
@@ -14,6 +19,7 @@ class ShareScreen extends StatefulWidget {
 class _ShareScreenState extends State<ShareScreen> {
 
   final controller = Get.put(HomeController());
+  final user = FirebaseAuth.instance.currentUser;
 
   @override
   Widget build(BuildContext context) {
@@ -29,7 +35,7 @@ class _ShareScreenState extends State<ShareScreen> {
           child: Column(
             children: [
               Container(
-                height: h * .09,
+                height: h * .08,
                 width: w,
                 decoration: BoxDecoration(
                   color: Colors.grey.shade100,
@@ -42,11 +48,11 @@ class _ShareScreenState extends State<ShareScreen> {
                       Row(
                         children: [
                           Container(
-                            height: h * .033,
-                            width: w * .12,
+                            height: h * .03,
+                            width: w * .1,
                             decoration: BoxDecoration(
                                 image: DecorationImage(
-                                  fit: BoxFit.cover,
+                                  fit: BoxFit.contain,
                                   image: AssetImage('assets/images/logo.png'),
                                 )
                             ),
@@ -55,8 +61,8 @@ class _ShareScreenState extends State<ShareScreen> {
                           Text('Shared Files',style: TextStyle(color: Colors.black,fontWeight: FontWeight.w600,fontSize: 16),),
                           Spacer(),
                           Container(
-                            height: h * .05,
-                            width: w * .13,
+                            height: h * .04,
+                            width: w * .1,
                             decoration: BoxDecoration(
                               color: Colors.white,
                               shape: BoxShape.circle,
@@ -67,15 +73,15 @@ class _ShareScreenState extends State<ShareScreen> {
                                   Align(
                                       alignment: Alignment.center,
                                       child: Container(
-                                        height: h * .03,
-                                        width: w * .05,
+                                        height: h * .02,
+                                        width: w * .04,
                                         decoration: BoxDecoration(
                                             image: DecorationImage(image: AssetImage('assets/images/notification.png'))
                                         ),
                                       )),
                                   Positioned(
-                                    left: 29,
-                                    top: 12,
+                                    left: 23,
+                                    top: 10,
                                     child: Badge(
                                       backgroundColor: AppColors.primaryColor,
                                     ),
@@ -85,19 +91,40 @@ class _ShareScreenState extends State<ShareScreen> {
                             ),
                           ),
                           SizedBox(width: 10,),
-                          GestureDetector(
-                            onTap: (){
-                              Get.toNamed('/settingScreen');
-                            },
-                            child: Container(
-                              height: h * .052,
-                              width: w * .12,
-                              decoration: BoxDecoration(
-                                image: DecorationImage(image: AssetImage('assets/images/profile.png')),
-                                shape: BoxShape.circle,
-                              ),
-                            ),
-                          ),
+                          if(user == null)...[
+                            UserProfile(),
+                          ]
+                          else...[
+                            StreamBuilder<DocumentSnapshot>(
+                                stream: FirebaseFirestore.instance.collection('users').doc(user!.uid).snapshots(),
+                                builder: (context, snapshot){
+                                  if(snapshot.connectionState == ConnectionState.waiting){
+                                    return Center(
+                                      child: CircularProgressIndicator(
+                                        color: AppColors.primaryColor,
+                                      ),
+                                    );
+                                  }
+                                  if(!snapshot.hasData || !snapshot.data!.exists){
+                                    return UserProfile();
+                                  }
+                                  var data = snapshot.data!.data() as Map<String, dynamic>?;
+                                  if(data == null || data.isEmpty){
+                                    return UserProfile();
+                                  }
+                                  return GestureDetector(
+                                    onTap: (){
+                                      Get.toNamed('/settingScreen');
+                                    },
+                                    child: CircleAvatar(
+                                      backgroundImage: data['photoUrl'] != null ?
+                                      NetworkImage(data['photoUrl']) : AssetImage('assets/images/profileTwo.png'),
+                                      radius: 22,
+                                    ),
+                                  );
+                                }
+                            )
+                          ]
                         ],
                       ),
                     ],
@@ -156,35 +183,63 @@ class _ShareScreenState extends State<ShareScreen> {
               Obx((){
                 return Column(
                   children: [
-                    if(controller.isListView.value && controller.files.isNotEmpty)
+                    if(controller.isListView.value && controller.sharedFiles.isNotEmpty)
                       SizedBox(
                         height: h * .71,
                         width: w,
                         child: ListView.builder(
-                            itemCount: controller.fileName.length,
+                            itemCount: controller.sharedFiles.length,
                             scrollDirection: Axis.vertical,
                             itemBuilder: (context,index){
+                              final shareFile = controller.sharedFiles[index];
+                              final extension = shareFile.extension?.toLowerCase() ?? '';
+
+                              Widget preview;
+                              if(['png','jpg','jpeg'].contains(extension)){
+                                preview = Container(
+                                  height: h * .07,
+                                  width: w * .15,
+                                  decoration: BoxDecoration(
+                                      image: DecorationImage(
+                                          fit: BoxFit.cover,
+                                          image: FileImage(File(shareFile.path!))),
+                                      borderRadius: BorderRadius.circular(10)
+                                  ),
+                                );
+                              }
+                              else if(['mp4','mkv','avi'].contains(extension)){
+                                preview = CustomContainer(image: 'assets/images/logo.png');
+                              }
+                              else if(['mp3','wav'].contains(extension)){
+                                preview = CustomContainer(image: 'assets/images/audio.png');
+                              }
+                              else if(extension == 'pdf'){
+                                preview = CustomContainer(image: 'assets/images/pdf.png');
+                              }
+                              else if(['doc','docx'].contains(extension)){
+                                preview = CustomContainer(image: 'assets/images/word.png');
+                              }
+                              else if(extension == 'zip'){
+                                preview = CustomContainer(image: 'assets/images/zip.png');
+                              }
+                              else{
+                                preview = CustomContainer(image: 'assets/images/unselected_files.png');
+                              }
+
                               return Padding(
-                                padding: const EdgeInsets.symmetric(horizontal: 10,vertical: 5),
+                                padding: const EdgeInsets.symmetric(horizontal: 15,vertical: 5),
                                 child: Container(
                                   height: h * .1,
                                   width: w,
                                   decoration: BoxDecoration(
-                                      color: Colors.white,
+                                      color: Colors.grey.shade100,
                                       borderRadius: BorderRadius.circular(10)
                                   ),
                                   child: Padding(
                                     padding: const EdgeInsets.symmetric(horizontal: 10),
                                     child: Row(
                                       children: [
-                                        Container(
-                                          height: h * .07,
-                                          width: w * .15,
-                                          decoration: BoxDecoration(
-                                              color: Colors.grey.shade200,
-                                              borderRadius: BorderRadius.circular(10)
-                                          ),
-                                        ),
+                                        preview,
                                         SizedBox(width: 20,),
                                         Column(
                                           mainAxisAlignment: MainAxisAlignment.center,
@@ -195,7 +250,7 @@ class _ShareScreenState extends State<ShareScreen> {
                                             child: Text(
                                               overflow: TextOverflow.ellipsis,
                                               maxLines: 1,
-                                              controller.fileName[index],
+                                              shareFile.name,
                                             style: TextStyle(color: Colors.black,
                                                 fontWeight: FontWeight.w500,
                                                 fontSize: 14),
@@ -220,12 +275,13 @@ class _ShareScreenState extends State<ShareScreen> {
                             }),
                       ),
 
-                    if(!controller.isListView.value && controller.files.isNotEmpty)
+                    if(!controller.isListView.value && controller.sharedFiles.isNotEmpty)
                       SizedBox(
                         height: h * .715,
                         width: w,
                         child: GridView.builder(
-                            itemCount: controller.fileName.length,
+                            itemCount: controller.sharedFiles.length,
+                            padding: EdgeInsets.only(top: 10),
                             gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                               crossAxisCount: 3,
                               mainAxisSpacing: 0,
@@ -233,40 +289,76 @@ class _ShareScreenState extends State<ShareScreen> {
                               mainAxisExtent: 170,
                             ),
                             itemBuilder: (context,index){
-                              return Column(
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  Container(
-                                    height: h * .12,
-                                    width: w * .27,
-                                    decoration: BoxDecoration(
-                                      color: Colors.white,
-                                      borderRadius: BorderRadius.circular(10),
-                                    ),
+                              final shareFile = controller.sharedFiles[index];
+                              final extension = shareFile.extension?.toLowerCase() ?? '';
+
+                              Widget preview;
+                              if(['png','jpg','jpeg'].contains(extension)){
+                                preview = Container(
+                                  height: h * .12,
+                                  width: w * .27,
+                                  decoration: BoxDecoration(
+                                    image: DecorationImage(
+                                        fit: BoxFit.cover,
+                                        image: FileImage(File(shareFile.path!))),
+                                    borderRadius: BorderRadius.circular(8),
                                   ),
-                                  SizedBox(height: 10,),
-                                  Padding(
-                                    padding: const EdgeInsets.symmetric(horizontal: 15),
-                                    child: SizedBox(
+                                );
+                              }
+                              else if(['mp4','mkv','avi'].contains(extension)){
+                                preview = CustomContainer(image: 'assets/images/logo.png');
+                              }
+                              else if(['mp3','wav'].contains(extension)){
+                                preview = CustomContainer(image: 'assets/images/audio.png');
+                              }
+                              else if(extension == 'pdf'){
+                                preview = CustomContainer(image:  'assets/images/pdf.png');
+                              }
+                              else if(['doc','docx'].contains(extension)){
+                                preview = CustomContainer(image:  'assets/images/word.png');
+                              }
+                              else if(extension == 'zip'){
+                                preview = CustomContainer(image:  'assets/images/zip.png');
+                              }
+                              else{
+                                preview = CustomContainer(image:  'assets/images/unselected_files.png');
+                              }
+
+                              return Padding(
+                                padding: const EdgeInsets.symmetric(horizontal: 15),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    Container(
+                                      height: h * .12,
+                                      width: w * .28,
+                                      decoration: BoxDecoration(
+                                        color: Colors.white,
+                                        borderRadius: BorderRadius.circular(10),
+                                      ),
+                                      child: Center(child: preview,),
+                                    ),
+                                    SizedBox(height: 10,),
+                                    SizedBox(
                                       height : h * .025,
                                       child: Text(
                                         textAlign: TextAlign.center,
                                         overflow: TextOverflow.ellipsis,
                                         maxLines: 1,
-                                        controller.fileName[index],
+                                        shareFile.name,
                                         style: TextStyle(color: Colors.black,
                                             fontSize: 14,
                                             fontWeight: FontWeight.w500),
                                       ),
                                     ),
-                                  ),
-                                  Text('20-05-2024',style: TextStyle(color: Colors.grey,fontSize: 11,fontWeight: FontWeight.w400),),
-                                ],
+                                    Text('20-05-2024',style: TextStyle(color: Colors.grey,fontSize: 11,fontWeight: FontWeight.w400),),
+                                  ],
+                                ),
                               );
                             }),
                       ),
-                    if(controller.files.isEmpty)...[
+                    if(controller.sharedFiles.isEmpty)...[
                       SizedBox(height: h * .27,),
                       Container(
                         height: h * .07,

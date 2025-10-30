@@ -203,7 +203,7 @@ class _MyFilesScreenState extends State<MyFilesScreen> {
                     SizedBox(width: 10,),
                     GestureDetector(
                         onTap: (){
-                          controller.toggleView();
+                          controller.myFilesToggleView();
                         },
                         child: Obx((){
                           return Container(
@@ -212,7 +212,7 @@ class _MyFilesScreenState extends State<MyFilesScreen> {
                             decoration: BoxDecoration(
                                 image: DecorationImage(
                                   fit: BoxFit.contain,
-                                  image: controller.isListView.value ? AssetImage('assets/images/grid.png')
+                                  image: controller.myFilesListView.value ? AssetImage('assets/images/grid.png')
                                       : AssetImage('assets/images/list.png'),
                                 )
                             ),
@@ -226,7 +226,7 @@ class _MyFilesScreenState extends State<MyFilesScreen> {
               Obx((){
                 return Column(
                   children: [
-                    if(controller.isListView.value && controller.platformFiles.isNotEmpty)
+                    if(controller.myFilesListView.value && controller.platformFiles.isNotEmpty)
                       SizedBox(
                         height: h * .71,
                         width: w,
@@ -318,7 +318,7 @@ class _MyFilesScreenState extends State<MyFilesScreen> {
                             }),
                       ),
         
-                    if(!controller.isListView.value && controller.platformFiles.isNotEmpty)
+                    if(!controller.myFilesListView.value && controller.platformFiles.isNotEmpty)
                       SizedBox(
                         height: h * .715,
                         width: w,

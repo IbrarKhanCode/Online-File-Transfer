@@ -7,7 +7,10 @@ import 'package:flutter/material.dart';
 
 class HomeController extends GetxController {
 
-  var isListView = true.obs;
+  var homeListView = true.obs;
+  var myFilesListView = true.obs;
+  var sharedListView = true.obs;
+  var favouriteListView = true.obs;
   var fileName = <String>[].obs;
   var files = <File>[].obs;
   var selectedIndex = 0.obs;
@@ -59,10 +62,18 @@ class HomeController extends GetxController {
     sharedFiles.remove(file);
   }
 
-  void toggleView(){
-    isListView.value = !isListView.value;
+  void homeToggleView(){
+    homeListView.value = !homeListView.value;
   }
-
+  void myFilesToggleView(){
+    myFilesListView.value = !myFilesListView.value;
+  }
+  void sharedToggleView(){
+    sharedListView.value = !sharedListView.value;
+  }
+  void favouriteToggleView(){
+    favouriteListView.value = !favouriteListView.value;
+  }
 
   Future<void> pickFiles() async {
 

@@ -159,7 +159,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     SizedBox(width: 10,),
                     GestureDetector(
                       onTap: (){
-                        controller.toggleView();
+                        controller.homeToggleView();
                       },
                       child: Obx((){
                         return Container(
@@ -167,7 +167,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           width: w * .07,
                           decoration: BoxDecoration(
                               image: DecorationImage(
-                                  image: controller.isListView.value ? AssetImage('assets/images/grid.png')
+                                  image: controller.homeListView.value ? AssetImage('assets/images/grid.png')
                                       : AssetImage('assets/images/list.png'),
                               )
                           ),
@@ -181,7 +181,7 @@ class _HomeScreenState extends State<HomeScreen> {
               Obx((){
                 return Column(
                   children: [
-                    if(controller.isListView.value && controller.files.isNotEmpty)
+                    if(controller.homeListView.value && controller.files.isNotEmpty)
                       SizedBox(
                         height: h * .71,
                         width: w,
@@ -245,7 +245,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             }),
                       ),
 
-                    if(!controller.isListView.value && controller.files.isNotEmpty)
+                    if(!controller.homeListView.value && controller.files.isNotEmpty)
                       SizedBox(
                         height: h * .715,
                         width: w,

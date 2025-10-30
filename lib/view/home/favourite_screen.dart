@@ -161,7 +161,7 @@ class _FavouriteScreenState extends State<FavouriteScreen> {
                     SizedBox(width: 10,),
                     GestureDetector(
                         onTap: (){
-                          controller.toggleView();
+                          controller.favouriteToggleView();
                         },
                         child: Obx((){
                           return Container(
@@ -169,7 +169,7 @@ class _FavouriteScreenState extends State<FavouriteScreen> {
                             width: w * .07,
                             decoration: BoxDecoration(
                                 image: DecorationImage(
-                                  image: controller.isListView.value ? AssetImage('assets/images/grid.png')
+                                  image: controller.favouriteListView.value ? AssetImage('assets/images/grid.png')
                                       : AssetImage('assets/images/list.png'),
                                 )
                             ),
@@ -183,7 +183,7 @@ class _FavouriteScreenState extends State<FavouriteScreen> {
               Obx((){
                 return Column(
                   children: [
-                    if(controller.isListView.value && controller.favouriteFiles.isNotEmpty)
+                    if(controller.favouriteListView.value && controller.favouriteFiles.isNotEmpty)
                       SizedBox(
                         height: h * .71,
                         width: w,
@@ -275,13 +275,13 @@ class _FavouriteScreenState extends State<FavouriteScreen> {
                             }),
                       ),
 
-                    if(!controller.isListView.value && controller.favouriteFiles.isNotEmpty)
+                    if(!controller.favouriteListView.value && controller.favouriteFiles.isNotEmpty)
                       SizedBox(
                         height: h * .715,
                         width: w,
                         child: GridView.builder(
-                            itemCount: controller.favouriteFiles.length,
                             padding: EdgeInsets.only(top: 10),
+                            itemCount: controller.favouriteFiles.length,
                             gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                               crossAxisCount: 3,
                               mainAxisSpacing: 0,
@@ -291,7 +291,6 @@ class _FavouriteScreenState extends State<FavouriteScreen> {
                             itemBuilder: (context,index){
                               final favouriteFile = controller.favouriteFiles[index];
                               final extension = favouriteFile.extension?.toLowerCase() ?? '';
-
                               Widget preview;
                               if(['png','jpg','jpeg'].contains(extension)){
                                 preview = Container(
@@ -328,17 +327,15 @@ class _FavouriteScreenState extends State<FavouriteScreen> {
                                 padding: const EdgeInsets.symmetric(horizontal: 15),
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.center,
-                                  mainAxisSize: MainAxisSize.min,
                                   children: [
                                     Container(
-                                      height: h * .12,
-                                      width: w * .28,
-                                      decoration: BoxDecoration(
-                                        color: Colors.white,
-                                        borderRadius: BorderRadius.circular(10),
-                                      ),
-                                      child: Center(child: preview,),
-                                    ),
+                                        height: h * .12,
+                                        width: w * .28,
+                                        decoration: BoxDecoration(
+                                          color: Colors.grey.shade100,
+                                          borderRadius: BorderRadius.circular(10),
+                                        ),
+                                        child: Center(child: preview)),
                                     SizedBox(height: 10,),
                                     SizedBox(
                                       height : h * .025,
@@ -368,7 +365,7 @@ class _FavouriteScreenState extends State<FavouriteScreen> {
                         ),
                       ),
                       SizedBox(height: 5,),
-                      Text('No Data Found',style: TextStyle(color: Colors.grey,fontWeight: FontWeight.w400,fontSize: 10),),
+                      Text('No FavouriteFile Found',style: TextStyle(color: Colors.grey,fontWeight: FontWeight.w400,fontSize: 10),),
                       SizedBox(height: h * .15,),
                     ],
                   ],

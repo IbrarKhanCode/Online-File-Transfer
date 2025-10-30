@@ -161,7 +161,7 @@ class _ShareScreenState extends State<ShareScreen> {
                     SizedBox(width: 10,),
                     GestureDetector(
                         onTap: (){
-                          controller.toggleView();
+                          controller.sharedToggleView();
                         },
                         child: Obx((){
                           return Container(
@@ -169,7 +169,7 @@ class _ShareScreenState extends State<ShareScreen> {
                             width: w * .07,
                             decoration: BoxDecoration(
                                 image: DecorationImage(
-                                  image: controller.isListView.value ? AssetImage('assets/images/grid.png')
+                                  image: controller.sharedListView.value ? AssetImage('assets/images/grid.png')
                                       : AssetImage('assets/images/list.png'),
                                 )
                             ),
@@ -183,7 +183,7 @@ class _ShareScreenState extends State<ShareScreen> {
               Obx((){
                 return Column(
                   children: [
-                    if(controller.isListView.value && controller.sharedFiles.isNotEmpty)
+                    if(controller.sharedListView.value && controller.sharedFiles.isNotEmpty)
                       SizedBox(
                         height: h * .71,
                         width: w,
@@ -275,13 +275,13 @@ class _ShareScreenState extends State<ShareScreen> {
                             }),
                       ),
 
-                    if(!controller.isListView.value && controller.sharedFiles.isNotEmpty)
+                    if(!controller.sharedListView.value && controller.sharedFiles.isNotEmpty)
                       SizedBox(
                         height: h * .715,
                         width: w,
                         child: GridView.builder(
-                            itemCount: controller.sharedFiles.length,
                             padding: EdgeInsets.only(top: 10),
+                            itemCount: controller.sharedFiles.length,
                             gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                               crossAxisCount: 3,
                               mainAxisSpacing: 0,
@@ -289,9 +289,8 @@ class _ShareScreenState extends State<ShareScreen> {
                               mainAxisExtent: 170,
                             ),
                             itemBuilder: (context,index){
-                              final shareFile = controller.sharedFiles[index];
-                              final extension = shareFile.extension?.toLowerCase() ?? '';
-
+                              final sharedFile = controller.sharedFiles[index];
+                              final extension = sharedFile.extension?.toLowerCase() ?? '';
                               Widget preview;
                               if(['png','jpg','jpeg'].contains(extension)){
                                 preview = Container(
@@ -300,7 +299,7 @@ class _ShareScreenState extends State<ShareScreen> {
                                   decoration: BoxDecoration(
                                     image: DecorationImage(
                                         fit: BoxFit.cover,
-                                        image: FileImage(File(shareFile.path!))),
+                                        image: FileImage(File(sharedFile.path!))),
                                     borderRadius: BorderRadius.circular(8),
                                   ),
                                 );
@@ -328,17 +327,15 @@ class _ShareScreenState extends State<ShareScreen> {
                                 padding: const EdgeInsets.symmetric(horizontal: 15),
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.center,
-                                  mainAxisSize: MainAxisSize.min,
                                   children: [
                                     Container(
-                                      height: h * .12,
-                                      width: w * .28,
-                                      decoration: BoxDecoration(
-                                        color: Colors.white,
-                                        borderRadius: BorderRadius.circular(10),
-                                      ),
-                                      child: Center(child: preview,),
-                                    ),
+                                        height: h * .12,
+                                        width: w * .28,
+                                        decoration: BoxDecoration(
+                                          color: Colors.grey.shade100,
+                                          borderRadius: BorderRadius.circular(10),
+                                        ),
+                                        child: Center(child: preview)),
                                     SizedBox(height: 10,),
                                     SizedBox(
                                       height : h * .025,
@@ -346,7 +343,7 @@ class _ShareScreenState extends State<ShareScreen> {
                                         textAlign: TextAlign.center,
                                         overflow: TextOverflow.ellipsis,
                                         maxLines: 1,
-                                        shareFile.name,
+                                        sharedFile.name,
                                         style: TextStyle(color: Colors.black,
                                             fontSize: 14,
                                             fontWeight: FontWeight.w500),
@@ -368,7 +365,7 @@ class _ShareScreenState extends State<ShareScreen> {
                         ),
                       ),
                       SizedBox(height: 5,),
-                      Text('No Data Found',style: TextStyle(color: Colors.grey,fontWeight: FontWeight.w400,fontSize: 10),),
+                      Text('No ShareFile Found',style: TextStyle(color: Colors.grey,fontWeight: FontWeight.w400,fontSize: 10),),
                       SizedBox(height: h * .15,),
                     ],
                   ],

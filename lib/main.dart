@@ -61,6 +61,7 @@ Future<bool> exitSheet(BuildContext context) async {
 
   await showModalBottomSheet(
       backgroundColor: Colors.white,
+      isDismissible: false,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
       ),

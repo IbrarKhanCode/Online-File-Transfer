@@ -5,7 +5,6 @@ import 'package:get/get.dart';
 import 'package:online_file_transfer/controller/sign_in_controller.dart';
 import 'package:online_file_transfer/core/utilis/app_colors.dart';
 import 'package:online_file_transfer/core/widget/user_data_column.dart';
-import 'package:online_file_transfer/view/profile/account_setting.dart';
 
 class SettingScreen extends StatefulWidget {
   const SettingScreen({super.key});
@@ -208,6 +207,7 @@ class _SettingScreenState extends State<SettingScreen> {
               onTap: (){
                 showModalBottomSheet(
                     backgroundColor: Colors.white,
+                    isDismissible: false,
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
                     ),

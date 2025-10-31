@@ -26,96 +26,136 @@ class _MyFilesScreenState extends State<MyFilesScreen> {
           context: context,
           builder: (context) {
             return Center(
-              child: Container(
-                height: MediaQuery.of(context).size.height * .2,
-                width: MediaQuery.of(context).size.width * .5,
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(10),
-                  boxShadow: [
-                    BoxShadow(
-                      blurRadius: 10,
-                      color: Colors.grey,
-                    )
-                  ]
-                ),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    SizedBox(
-                      height: 20,
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 10),
-                      child: Row(
+              child: Obx((){
+                return Container(
+                  height: MediaQuery.of(context).size.height * .2,
+                  width: MediaQuery.of(context).size.width * .65,
+                  decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(10),
+                      boxShadow: [
+                        BoxShadow(
+                          blurRadius: 10,
+                          color: Colors.grey,
+                        )
+                      ]
+                  ),
+                  child: Column(
+                    children: [
+                      SizedBox(
+                        height: 20,
+                      ),
+                      // Align(
+                      //   alignment: Alignment.topRight,
+                      //   child: GestureDetector(
+                      //     onTap: (){
+                      //       Get.back();
+                      //     },
+                      //     child: Container(
+                      //       height: MediaQuery.of(context).size.height * .03,
+                      //       width: MediaQuery.of(context).size.width * .06,
+                      //       decoration: BoxDecoration(
+                      //         color: Colors.grey.shade100,
+                      //         shape: BoxShape.circle,
+                      //       ),
+                      //       child: Center(
+                      //         child: Icon(Icons.close,color: Colors.black,size: 15,),
+                      //       ),
+                      //     ),
+                      //   ),
+                      // ),
+                      SizedBox(
+                        width: MediaQuery.of(context).size.width * .35,
+                        child: Text(
+                          overflow: TextOverflow.ellipsis,
+                          maxLines: 2,
+                          file.name,style: TextStyle(color: Colors.black,
+                            fontSize: 16,fontWeight: FontWeight.w600),),
+                      ),
+                      SizedBox(height: 20,),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
                         children: [
                           SizedBox(
-                            width: MediaQuery.of(context).size.width * .35,
-                            child: Text(
-                              overflow: TextOverflow.ellipsis,
-                              maxLines: 1,
-                              file.name,style: TextStyle(color: Colors.black,
-                            fontSize: 18,fontWeight: FontWeight.w600),),
-                          ),
-                          Spacer(),
-                          GestureDetector(
-                            onTap: (){
-                              Get.back();
-                            },
-                            child: Container(
-                              height: MediaQuery.of(context).size.height * .03,
-                              width: MediaQuery.of(context).size.width * .08,
-                              decoration: BoxDecoration(
-                                color: Colors.grey.shade100,
-                                shape: BoxShape.circle,
+                            height: MediaQuery.of(context).size.height * .03,
+                            width: MediaQuery.of(context).size.width * .5,
+                            child: ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: Colors.white,
+                                shadowColor: Colors.transparent,
                               ),
-                              child: Center(
-                                child: Icon(Icons.close,color: Colors.black,size: 20,),
+                              onPressed: (){
+                                controller.toggleFavourite(file);
+                              },
+                              child: Row(
+                                children: [
+                                  Container(
+                                    height: MediaQuery.of(context).size.height * .02,
+                                    width: MediaQuery.of(context).size.width * .04,
+                                    decoration: BoxDecoration(
+                                      image: DecorationImage(
+                                          image: controller.isFavourite(file) ?
+                                          AssetImage('assets/images/selected_star.png')
+                                              : AssetImage('assets/images/unselected_star.png')),
+                                    ),
+                                  ),
+                                  SizedBox(width: 10,),
+                                  Text(
+                                    controller.isFavourite(file) ?
+                                    'Unfavorite' : 'Favourite',
+                                    style: TextStyle(
+                                        color: controller.isFavourite(file) ?
+                                        AppColors.primaryColor : Colors.grey,
+                                        fontSize: 16,fontWeight: FontWeight.w500),),
+                                ],
                               ),
                             ),
                           ),
                         ],
                       ),
-                    ),
-                    SizedBox(height: MediaQuery.of(context).size.height * .04,),
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Row(
+                      SizedBox(height: 10,),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
                         children: [
-                          Container(
-                            height: MediaQuery.of(context).size.height * .02,
-                            width: MediaQuery.of(context).size.width * .04,
-                            decoration: BoxDecoration(
-                                image: DecorationImage(image: AssetImage(
-                                    'assets/images/unselected_star.png')),
+                          SizedBox(
+                            height: MediaQuery.of(context).size.height * .03,
+                            width: MediaQuery.of(context).size.width * .5,
+                            child: ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: Colors.white,
+                                shadowColor: Colors.transparent,
+                              ),
+                              onPressed: (){
+                                controller.shareFile(file);
+                              },
+                              child: Row(
+                                children: [
+                                  Container(
+                                    height: MediaQuery.of(context).size.height * .02,
+                                    width: MediaQuery.of(context).size.width * .04,
+                                    decoration: BoxDecoration(
+                                        image: DecorationImage(
+                                            image: controller.isShared(file) ?
+                                            AssetImage('assets/images/selected_share.png')
+                                            : AssetImage('assets/images/unselected_share.png'),
+                                        ),
+                                    ),
+                                  ),
+                                  SizedBox(width: 10,),
+                                  Text(
+                                    controller.isShared(file) ? 'Reshare' : 'Share',
+                                    style: TextStyle(color: controller.isShared(file) ? AppColors.primaryColor
+                                    : Colors.grey, fontSize: 16,fontWeight: FontWeight.w500),)
+                                ],
+                              ),
                             ),
                           ),
-                          SizedBox(width: 10,),
-                          Text('Favorite',style: TextStyle(color: Colors.grey,fontSize: 16,fontWeight: FontWeight.w500),)
                         ],
                       ),
-                    ),
-                    SizedBox(height: 10,),
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Row(
-                        children: [
-                          Container(
-                            height: MediaQuery.of(context).size.height * .02,
-                            width: MediaQuery.of(context).size.width * .04,
-                            decoration: BoxDecoration(
-                              image: DecorationImage(image: AssetImage(
-                                  'assets/images/unselected_share.png'))
-                            ),
-                          ),
-                          SizedBox(width: 10,),
-                          Text('Share',style: TextStyle(color: Colors.grey,fontSize: 16,fontWeight: FontWeight.w500),)
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-              ),
+                    ],
+                  ),
+                );
+              }),
             );
           });
   }

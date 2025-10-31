@@ -25,38 +25,95 @@ class _MyFilesScreenState extends State<MyFilesScreen> {
       showDialog(
           context: context,
           builder: (context) {
-            return Dialog(
-              backgroundColor: Colors.white,
-              child: SizedBox(
-                height: MediaQuery.of(context).size.height * 0.3,
-                width: MediaQuery.of(context).size.width,
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(
-                      horizontal: 10.0),
-                  child: Column(
-                    children: [
-                      SizedBox(
-                        height: 20,
+            return Center(
+              child: Container(
+                height: MediaQuery.of(context).size.height * .2,
+                width: MediaQuery.of(context).size.width * .5,
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(10),
+                  boxShadow: [
+                    BoxShadow(
+                      blurRadius: 10,
+                      color: Colors.grey,
+                    )
+                  ]
+                ),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    SizedBox(
+                      height: 20,
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 10),
+                      child: Row(
+                        children: [
+                          SizedBox(
+                            width: MediaQuery.of(context).size.width * .35,
+                            child: Text(
+                              overflow: TextOverflow.ellipsis,
+                              maxLines: 1,
+                              file.name,style: TextStyle(color: Colors.black,
+                            fontSize: 18,fontWeight: FontWeight.w600),),
+                          ),
+                          Spacer(),
+                          GestureDetector(
+                            onTap: (){
+                              Get.back();
+                            },
+                            child: Container(
+                              height: MediaQuery.of(context).size.height * .03,
+                              width: MediaQuery.of(context).size.width * .08,
+                              decoration: BoxDecoration(
+                                color: Colors.grey.shade100,
+                                shape: BoxShape.circle,
+                              ),
+                              child: Center(
+                                child: Icon(Icons.close,color: Colors.black,size: 20,),
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
-                      TextButton(
-                          onPressed: () async {
-                            Get.back();
-                            await controller.shareFile(file);
-                          },
-                          child: Text(controller.isShared(file) ? 'Reshare'
-                          : 'Share')),
-                      SizedBox(
-                        height: 20,
+                    ),
+                    SizedBox(height: MediaQuery.of(context).size.height * .04,),
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Row(
+                        children: [
+                          Container(
+                            height: MediaQuery.of(context).size.height * .02,
+                            width: MediaQuery.of(context).size.width * .04,
+                            decoration: BoxDecoration(
+                                image: DecorationImage(image: AssetImage(
+                                    'assets/images/unselected_star.png')),
+                            ),
+                          ),
+                          SizedBox(width: 10,),
+                          Text('Favorite',style: TextStyle(color: Colors.grey,fontSize: 16,fontWeight: FontWeight.w500),)
+                        ],
                       ),
-                      TextButton(
-                          onPressed: (){
-                            controller.toggleFavourite(file);
-                            Get.back();
-                          },
-                          child: Text(controller.isFavourite(file) ? 'unFavourite'
-                              : 'Favourite'))
-                    ],
-                  ),
+                    ),
+                    SizedBox(height: 10,),
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Row(
+                        children: [
+                          Container(
+                            height: MediaQuery.of(context).size.height * .02,
+                            width: MediaQuery.of(context).size.width * .04,
+                            decoration: BoxDecoration(
+                              image: DecorationImage(image: AssetImage(
+                                  'assets/images/unselected_share.png'))
+                            ),
+                          ),
+                          SizedBox(width: 10,),
+                          Text('Share',style: TextStyle(color: Colors.grey,fontSize: 16,fontWeight: FontWeight.w500),)
+                        ],
+                      ),
+                    ),
+                  ],
                 ),
               ),
             );

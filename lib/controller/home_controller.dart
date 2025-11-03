@@ -10,6 +10,7 @@ class HomeController extends GetxController with WidgetsBindingObserver {
   var myFilesListView = true.obs;
   var sharedListView = true.obs;
   var favouriteListView = true.obs;
+  var deleteListView = true.obs;
   var fileName = <String>[].obs;
   var files = <File>[].obs;
   var selectedIndex = 0.obs;
@@ -89,6 +90,24 @@ class HomeController extends GetxController with WidgetsBindingObserver {
     filteredFiles.remove(file);
     favouriteFiles.remove(file);
     sharedFiles.remove(file);
+    
+    if(!deleteFiles.contains(file)){
+      deleteFiles.add(file);
+    }
+  }
+
+  bool isDelete(PlatformFile file) => deleteFiles.contains(file);
+
+  void restoreFiles(PlatformFile file){
+    if(deleteFiles.contains(file)){
+      deleteFiles.remove(file);
+      filteredFiles.add(file);
+      platformFiles.add(file);
+    }
+  }
+
+  void permanentDelete(PlatformFile file){
+    deleteFiles.remove(file);
   }
 
   void homeToggleView(){
@@ -102,6 +121,9 @@ class HomeController extends GetxController with WidgetsBindingObserver {
   }
   void favouriteToggleView(){
     favouriteListView.value = !favouriteListView.value;
+  }
+  void deleteToggleView(){
+    deleteListView.value = !deleteListView.value;
   }
 
   Future<void> pickFiles() async {

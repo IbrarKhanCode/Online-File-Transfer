@@ -28,7 +28,7 @@ class _MyFilesScreenState extends State<MyFilesScreen> {
             return Center(
               child: Obx((){
                 return Container(
-                  height: MediaQuery.of(context).size.height * .2,
+                  height: MediaQuery.of(context).size.height * .23,
                   width: MediaQuery.of(context).size.width * .65,
                   decoration: BoxDecoration(
                       color: Colors.white,
@@ -45,32 +45,15 @@ class _MyFilesScreenState extends State<MyFilesScreen> {
                       SizedBox(
                         height: 20,
                       ),
-                      // Align(
-                      //   alignment: Alignment.topRight,
-                      //   child: GestureDetector(
-                      //     onTap: (){
-                      //       Get.back();
-                      //     },
-                      //     child: Container(
-                      //       height: MediaQuery.of(context).size.height * .03,
-                      //       width: MediaQuery.of(context).size.width * .06,
-                      //       decoration: BoxDecoration(
-                      //         color: Colors.grey.shade100,
-                      //         shape: BoxShape.circle,
-                      //       ),
-                      //       child: Center(
-                      //         child: Icon(Icons.close,color: Colors.black,size: 15,),
-                      //       ),
-                      //     ),
-                      //   ),
-                      // ),
                       SizedBox(
                         width: MediaQuery.of(context).size.width * .35,
-                        child: Text(
-                          overflow: TextOverflow.ellipsis,
-                          maxLines: 2,
-                          file.name,style: TextStyle(color: Colors.black,
-                            fontSize: 16,fontWeight: FontWeight.w600),),
+                        child: Center(
+                          child: Text(
+                            overflow: TextOverflow.ellipsis,
+                            maxLines: 2,
+                            file.name,style: TextStyle(color: Colors.black,
+                              fontSize: 16,fontWeight: FontWeight.w600),),
+                        ),
                       ),
                       SizedBox(height: 20,),
                       Row(
@@ -86,6 +69,7 @@ class _MyFilesScreenState extends State<MyFilesScreen> {
                               ),
                               onPressed: (){
                                 controller.toggleFavourite(file);
+                                Get.back();
                               },
                               child: Row(
                                 children: [
@@ -127,6 +111,7 @@ class _MyFilesScreenState extends State<MyFilesScreen> {
                               ),
                               onPressed: (){
                                 controller.shareFile(file);
+                                Get.back();
                               },
                               child: Row(
                                 children: [
@@ -166,6 +151,7 @@ class _MyFilesScreenState extends State<MyFilesScreen> {
                               ),
                               onPressed: (){
                                 controller.deleteFile(file);
+                                Get.back();
                               },
                               child: Row(
                                 children: [
@@ -174,17 +160,16 @@ class _MyFilesScreenState extends State<MyFilesScreen> {
                                     width: MediaQuery.of(context).size.width * .04,
                                     decoration: BoxDecoration(
                                       image: DecorationImage(
-                                        image: controller.isShared(file) ?
-                                        AssetImage('assets/images/selected_share.png')
-                                            : AssetImage('assets/images/unselected_share.png'),
+                                        image: controller.isDelete(file) ?
+                                        AssetImage('assets/images/delete.png')
+                                            : AssetImage('assets/images/unDelete.png'),
                                       ),
                                     ),
                                   ),
                                   SizedBox(width: 10,),
-                                  Text(
-                                    controller.isShared(file) ? 'Reshare' : 'Share',
-                                    style: TextStyle(color: controller.isShared(file) ? AppColors.primaryColor
-                                        : Colors.grey, fontSize: 16,fontWeight: FontWeight.w500),)
+                                  Text('Delete', style: TextStyle(color: controller.isDelete(file)
+                                 ? AppColors.primaryColor : Colors.red, fontSize: 16,
+                                      fontWeight: FontWeight.w500),),
                                 ],
                               ),
                             ),
@@ -364,7 +349,7 @@ class _MyFilesScreenState extends State<MyFilesScreen> {
                   children: [
                     if(controller.myFilesListView.value && controller.platformFiles.isNotEmpty)
                       SizedBox(
-                        height: h * .71,
+                        height: h * .715,
                         width: w,
                         child: ListView.builder(
                             itemCount: controller.filteredFiles.length,

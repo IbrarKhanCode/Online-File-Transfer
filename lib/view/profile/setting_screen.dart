@@ -168,37 +168,42 @@ class _SettingScreenState extends State<SettingScreen> {
               ),
             ),
             SizedBox(height: 10,),
-            Container(
-              height: h * .07,
-              width: w * .9,
-              decoration: BoxDecoration(
-                  color: Colors.white,
-                  border: Border.all(color: Colors.grey.shade100,),
-                  borderRadius: BorderRadius.circular(15)
-              ),
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 10),
-                child: Row(
-                  children: [
-                    Container(
-                      height: h * .03,
-                      width: w * .08,
-                      decoration: BoxDecoration(
-                          image: DecorationImage(
-                              fit: BoxFit.contain,
-                              image: AssetImage('assets/images/delete.png'))
+            GestureDetector(
+              onTap: (){
+                Get.toNamed('/deleteScreen');
+              },
+              child: Container(
+                height: h * .07,
+                width: w * .9,
+                decoration: BoxDecoration(
+                    color: Colors.white,
+                    border: Border.all(color: Colors.grey.shade100,),
+                    borderRadius: BorderRadius.circular(15)
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 10),
+                  child: Row(
+                    children: [
+                      Container(
+                        height: h * .03,
+                        width: w * .08,
+                        decoration: BoxDecoration(
+                            image: DecorationImage(
+                                fit: BoxFit.contain,
+                                image: AssetImage('assets/images/delete.png'))
+                        ),
                       ),
-                    ),
-                    SizedBox(width: 15,),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text('Deleted Files',style: TextStyle(color: Colors.black,fontSize: 14,fontWeight: FontWeight.w600),),
-                        Text('Check your industry ',style: TextStyle(color: Colors.grey,fontSize: 10,fontWeight: FontWeight.w400),),
-                      ],
-                    )
-                  ],
+                      SizedBox(width: 15,),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text('Deleted Files',style: TextStyle(color: Colors.black,fontSize: 14,fontWeight: FontWeight.w600),),
+                          Text('Check your industry ',style: TextStyle(color: Colors.grey,fontSize: 10,fontWeight: FontWeight.w400),),
+                        ],
+                      )
+                    ],
+                  ),
                 ),
               ),
             ),

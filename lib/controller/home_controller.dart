@@ -1,11 +1,10 @@
 import 'dart:io';
 import 'package:file_picker/file_picker.dart';
 import 'package:get/get.dart';
-import 'package:online_file_transfer/model/file_item.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:flutter/material.dart';
 
-class HomeController extends GetxController {
+class HomeController extends GetxController with WidgetsBindingObserver {
 
   var homeListView = true.obs;
   var myFilesListView = true.obs;
@@ -18,6 +17,38 @@ class HomeController extends GetxController {
   var platformFiles = <PlatformFile>[].obs;
   var favouriteFiles = <PlatformFile>[].obs;
   var sharedFiles = <PlatformFile>[].obs;
+  var deleteFiles = <PlatformFile>[].obs;
+
+  PlatformFile? pendingFile;
+  bool appPausedForShare = false;
+
+  @override
+  void onInit() {
+    super.onInit();
+    WidgetsBinding.instance.addObserver(this);
+  }
+
+  @override
+  void onClose() {
+    WidgetsBinding.instance.removeObserver(this);
+    super.onClose();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state){
+    if(state == AppLifecycleState.resumed && appPausedForShare){
+      if(pendingFile != null){
+        if(!sharedFiles.contains(pendingFile)){
+          sharedFiles.add(pendingFile!);
+        }
+        pendingFile = null;
+      }
+      appPausedForShare = false;
+    }
+    if(state == AppLifecycleState.paused){
+      appPausedForShare = true;
+    }
+  }
 
   void toggleFavourite(PlatformFile file) {
     if (favouriteFiles.contains(file)) {
@@ -33,12 +64,10 @@ class HomeController extends GetxController {
     try {
       final filePath = file.path;
       if (filePath == null) return;
+      pendingFile = file;
 
-      await Share.shareXFiles([XFile(filePath)], text: 'Sharing ${file.name}');
+      await Share.shareXFiles([XFile(filePath)],);
 
-      if (!sharedFiles.contains(file)) {
-        sharedFiles.add(file);
-      }
     } catch (e) {
       Get.snackbar(
         'Error',

@@ -152,6 +152,45 @@ class _MyFilesScreenState extends State<MyFilesScreen> {
                           ),
                         ],
                       ),
+                      SizedBox(height: 10,),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          SizedBox(
+                            height: MediaQuery.of(context).size.height * .03,
+                            width: MediaQuery.of(context).size.width * .5,
+                            child: ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: Colors.white,
+                                shadowColor: Colors.transparent,
+                              ),
+                              onPressed: (){
+                                controller.deleteFile(file);
+                              },
+                              child: Row(
+                                children: [
+                                  Container(
+                                    height: MediaQuery.of(context).size.height * .02,
+                                    width: MediaQuery.of(context).size.width * .04,
+                                    decoration: BoxDecoration(
+                                      image: DecorationImage(
+                                        image: controller.isShared(file) ?
+                                        AssetImage('assets/images/selected_share.png')
+                                            : AssetImage('assets/images/unselected_share.png'),
+                                      ),
+                                    ),
+                                  ),
+                                  SizedBox(width: 10,),
+                                  Text(
+                                    controller.isShared(file) ? 'Reshare' : 'Share',
+                                    style: TextStyle(color: controller.isShared(file) ? AppColors.primaryColor
+                                        : Colors.grey, fontSize: 16,fontWeight: FontWeight.w500),)
+                                ],
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
                     ],
                   ),
                 );
@@ -368,45 +407,54 @@ class _MyFilesScreenState extends State<MyFilesScreen> {
         
                               return Padding(
                                 padding: const EdgeInsets.symmetric(horizontal: 15,vertical: 5),
-                                child: Container(
-                                  height: h * .1,
-                                  width: w,
-                                  decoration: BoxDecoration(
-                                      color: Colors.grey.shade100,
-                                      borderRadius: BorderRadius.circular(10),
-                                  ),
-                                  child: Padding(
-                                    padding: const EdgeInsets.symmetric(horizontal: 10),
-                                    child: Row(
-                                      children: [
-                                        preview,
-                                        SizedBox(width: 20,),
-                                        Column(
-                                          mainAxisAlignment: MainAxisAlignment.center,
-                                          crossAxisAlignment: CrossAxisAlignment.start,
-                                          children: [
-                                            SizedBox(
-                                              width : w * .55,
-                                              child: Text(file.name,
-                                                overflow: TextOverflow.ellipsis,
-                                                maxLines: 1,
-                                                style: TextStyle(color: Colors.black,
-                                                    fontWeight: FontWeight.w500,
-                                                    fontSize: 14),
+                                child: GestureDetector(
+                                  onTap: (){
+                                    openDialog(
+                                        context,
+                                        controller,
+                                        file,
+                                    );
+                                  },
+                                  child: Container(
+                                    height: h * .1,
+                                    width: w,
+                                    decoration: BoxDecoration(
+                                        color: Colors.grey.shade100,
+                                        borderRadius: BorderRadius.circular(10),
+                                    ),
+                                    child: Padding(
+                                      padding: const EdgeInsets.symmetric(horizontal: 10),
+                                      child: Row(
+                                        children: [
+                                          preview,
+                                          SizedBox(width: 20,),
+                                          Column(
+                                            mainAxisAlignment: MainAxisAlignment.center,
+                                            crossAxisAlignment: CrossAxisAlignment.start,
+                                            children: [
+                                              SizedBox(
+                                                width : w * .55,
+                                                child: Text(file.name,
+                                                  overflow: TextOverflow.ellipsis,
+                                                  maxLines: 1,
+                                                  style: TextStyle(color: Colors.black,
+                                                      fontWeight: FontWeight.w500,
+                                                      fontSize: 14),
+                                                ),
                                               ),
-                                            ),
-                                            Row(
-                                              children: [
-                                                Text('20-05-2024',style: TextStyle(color: Colors.grey,fontWeight: FontWeight.w400,fontSize: 11),),
-                                                SizedBox(width: 10,),
-                                                Text('20-05-2024',style: TextStyle(color: Colors.grey,fontWeight: FontWeight.w400,fontSize: 11),),
-                                              ],
-                                            ),
-                                          ],
-                                        ),
-                                        Spacer(),
-                                        Icon(Icons.arrow_forward_ios,color: Colors.grey,)
-                                      ],
+                                              Row(
+                                                children: [
+                                                  Text('20-05-2024',style: TextStyle(color: Colors.grey,fontWeight: FontWeight.w400,fontSize: 11),),
+                                                  SizedBox(width: 10,),
+                                                  Text('20-05-2024',style: TextStyle(color: Colors.grey,fontWeight: FontWeight.w400,fontSize: 11),),
+                                                ],
+                                              ),
+                                            ],
+                                          ),
+                                          Spacer(),
+                                          Icon(Icons.arrow_forward_ios,color: Colors.grey,)
+                                        ],
+                                      ),
                                     ),
                                   ),
                                 ),

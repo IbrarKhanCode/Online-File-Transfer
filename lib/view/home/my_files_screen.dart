@@ -371,7 +371,7 @@ class _MyFilesScreenState extends State<MyFilesScreen> {
                                   ),
                                 );
                               }
-                              else if(['mp4','mkv','avi'].contains(extension)){
+                              else if(['mp4','mkv','avi','mov'].contains(extension)){
                                 preview = CustomContainer(image: 'assets/images/logo.png');
                               }
                               else if(['mp3','wav'].contains(extension)){

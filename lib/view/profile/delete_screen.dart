@@ -1,5 +1,5 @@
 import 'dart:io';
-
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:online_file_transfer/controller/home_controller.dart';
@@ -16,6 +16,112 @@ class DeleteScreen extends StatefulWidget {
 class _DeleteScreenState extends State<DeleteScreen> {
   
   final controller = Get.put(HomeController());
+
+  void openDialog(BuildContext context,HomeController controller,PlatformFile file){
+    showDialog(
+        context: context,
+        builder: (context) {
+          return Center(
+            child: Container(
+              height: MediaQuery.of(context).size.height * .2,
+              width: MediaQuery.of(context).size.width * .65,
+              decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(10),
+                  boxShadow: [
+                    BoxShadow(
+                      blurRadius: 10,
+                      color: Colors.grey,
+                    )
+                  ]
+              ),
+              child: Column(
+                children: [
+                  SizedBox(
+                    height: 20,
+                  ),
+                  SizedBox(
+                    width: MediaQuery.of(context).size.width * .35,
+                    child: Center(
+                      child: Text(
+                        overflow: TextOverflow.ellipsis,
+                        maxLines: 2,
+                        file.name,style: TextStyle(color: Colors.black,
+                          fontSize: 16,fontWeight: FontWeight.w600),),
+                    ),
+                  ),
+                  SizedBox(height: 20,),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      SizedBox(
+                        height: MediaQuery.of(context).size.height * .03,
+                        width: MediaQuery.of(context).size.width * .5,
+                        child: ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.white,
+                            shadowColor: Colors.transparent,
+                          ),
+                          onPressed: (){
+                            controller.restoreFiles(file);
+                            Get.back();
+                          },
+                          child: Row(
+                            children: [
+                              Icon(Icons.restore,size: 25,color: Colors.grey,),
+                              SizedBox(width: 10,),
+                              Text(
+                                'Restore',
+                                style: TextStyle(color: Colors.grey,
+                                    fontSize: 16,fontWeight: FontWeight.w500),),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  SizedBox(height: 10,),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      SizedBox(
+                        height: MediaQuery.of(context).size.height * .03,
+                        width: MediaQuery.of(context).size.width * .5,
+                        child: ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.white,
+                            shadowColor: Colors.transparent,
+                          ),
+                          onPressed: (){
+                            controller.permanentDelete(file);
+                            Get.back();
+                          },
+                          child: Row(
+                            children: [
+                              Container(
+                                height: MediaQuery.of(context).size.height * .02,
+                                width: MediaQuery.of(context).size.width * .04,
+                                decoration: BoxDecoration(
+                                  image: DecorationImage(
+                                    image: AssetImage('assets/images/unDelete.png'),
+                                  ),
+                                ),
+                              ),
+                              SizedBox(width: 10,),
+                              Text('Delete', style: TextStyle(color: Colors.red, fontSize: 16,
+                                  fontWeight: FontWeight.w500),),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          );
+        });
+  }
   
   @override
   Widget build(BuildContext context) {
@@ -152,46 +258,51 @@ class _DeleteScreenState extends State<DeleteScreen> {
           
                               return Padding(
                                 padding: const EdgeInsets.symmetric(horizontal: 15,vertical: 5),
-                                child: Container(
-                                  height: h * .1,
-                                  width: w,
-                                  decoration: BoxDecoration(
-                                      color: Colors.grey.shade100,
-                                      borderRadius: BorderRadius.circular(10)
-                                  ),
-                                  child: Padding(
-                                    padding: const EdgeInsets.symmetric(horizontal: 10),
-                                    child: Row(
-                                      children: [
-                                        preview,
-                                        SizedBox(width: 20,),
-                                        Column(
-                                          mainAxisAlignment: MainAxisAlignment.center,
-                                          crossAxisAlignment: CrossAxisAlignment.start,
-                                          children: [
-                                            SizedBox(
-                                              width : w * .55,
-                                              child: Text(
-                                                overflow: TextOverflow.ellipsis,
-                                                maxLines: 1,
-                                                deleteFile.name,
-                                                style: TextStyle(color: Colors.black,
-                                                    fontWeight: FontWeight.w500,
-                                                    fontSize: 14),
+                                child: GestureDetector(
+                                  onTap: (){
+                                    openDialog(context, controller, deleteFile);
+                                  },
+                                  child: Container(
+                                    height: h * .1,
+                                    width: w,
+                                    decoration: BoxDecoration(
+                                        color: Colors.grey.shade100,
+                                        borderRadius: BorderRadius.circular(10),
+                                    ),
+                                    child: Padding(
+                                      padding: const EdgeInsets.symmetric(horizontal: 10),
+                                      child: Row(
+                                        children: [
+                                          preview,
+                                          SizedBox(width: 20,),
+                                          Column(
+                                            mainAxisAlignment: MainAxisAlignment.center,
+                                            crossAxisAlignment: CrossAxisAlignment.start,
+                                            children: [
+                                              SizedBox(
+                                                width : w * .55,
+                                                child: Text(
+                                                  overflow: TextOverflow.ellipsis,
+                                                  maxLines: 1,
+                                                  deleteFile.name,
+                                                  style: TextStyle(color: Colors.black,
+                                                      fontWeight: FontWeight.w500,
+                                                      fontSize: 14),
+                                                ),
                                               ),
-                                            ),
-                                            Row(
-                                              children: [
-                                                Text('20-05-2024',style: TextStyle(color: Colors.grey,fontWeight: FontWeight.w400,fontSize: 11),),
-                                                SizedBox(width: 10,),
-                                                Text('20-05-2024',style: TextStyle(color: Colors.grey,fontWeight: FontWeight.w400,fontSize: 11),),
-                                              ],
-                                            ),
-                                          ],
-                                        ),
-                                        Spacer(),
-                                        Icon(Icons.arrow_forward_ios,color: Colors.grey,)
-                                      ],
+                                              Row(
+                                                children: [
+                                                  Text('20-05-2024',style: TextStyle(color: Colors.grey,fontWeight: FontWeight.w400,fontSize: 11),),
+                                                  SizedBox(width: 10,),
+                                                  Text('20-05-2024',style: TextStyle(color: Colors.grey,fontWeight: FontWeight.w400,fontSize: 11),),
+                                                ],
+                                              ),
+                                            ],
+                                          ),
+                                          Spacer(),
+                                          Icon(Icons.arrow_forward_ios,color: Colors.grey,)
+                                        ],
+                                      ),
                                     ),
                                   ),
                                 ),
@@ -249,32 +360,37 @@ class _DeleteScreenState extends State<DeleteScreen> {
           
                               return Padding(
                                 padding: const EdgeInsets.symmetric(horizontal: 15),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  children: [
-                                    Container(
-                                        height: h * .12,
-                                        width: w * .28,
-                                        decoration: BoxDecoration(
-                                          color: Colors.grey.shade100,
-                                          borderRadius: BorderRadius.circular(10),
+                                child: GestureDetector(
+                                  onTap: (){
+                                    openDialog(context, controller, deleteFile);
+                                  },
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.center,
+                                    children: [
+                                      Container(
+                                          height: h * .12,
+                                          width: w * .28,
+                                          decoration: BoxDecoration(
+                                            color: Colors.grey.shade100,
+                                            borderRadius: BorderRadius.circular(10),
+                                          ),
+                                          child: Center(child: preview)),
+                                      SizedBox(height: 10,),
+                                      SizedBox(
+                                        height : h * .025,
+                                        child: Text(
+                                          textAlign: TextAlign.center,
+                                          overflow: TextOverflow.ellipsis,
+                                          maxLines: 1,
+                                          deleteFile.name,
+                                          style: TextStyle(color: Colors.black,
+                                              fontSize: 14,
+                                              fontWeight: FontWeight.w500),
                                         ),
-                                        child: Center(child: preview)),
-                                    SizedBox(height: 10,),
-                                    SizedBox(
-                                      height : h * .025,
-                                      child: Text(
-                                        textAlign: TextAlign.center,
-                                        overflow: TextOverflow.ellipsis,
-                                        maxLines: 1,
-                                        deleteFile.name,
-                                        style: TextStyle(color: Colors.black,
-                                            fontSize: 14,
-                                            fontWeight: FontWeight.w500),
                                       ),
-                                    ),
-                                    Text('20-05-2024',style: TextStyle(color: Colors.grey,fontSize: 11,fontWeight: FontWeight.w400),),
-                                  ],
+                                      Text('20-05-2024',style: TextStyle(color: Colors.grey,fontSize: 11,fontWeight: FontWeight.w400),),
+                                    ],
+                                  ),
                                 ),
                               );
                             }),

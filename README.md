@@ -104,4 +104,4 @@ This app is designed to make file sharing **simple, fast, and reliable**, access
 - **Backend:** Firebase (Auth + Firestore)
 - **State Management:** GetX
 - **Storage:** Cloud Firestore
-- **Platform:** Android (iOS and Web coming soon)
+- **Platform:** Android
